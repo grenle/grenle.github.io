@@ -1,0 +1,140 @@
+body{
+    /* 400 Norm, 700 Bold */
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    background: white;
+    margin: 0;
+    padding: 0;
+}
+
+header{
+    margin: 0;
+    margin-top: -20px;
+}
+
+h1, h2, h3, h4, h5, h6{
+    font-weight: 700;
+}
+
+
+h1{
+    font-size: 1.5em;
+    padding: 1em 0 0.5em 0;
+}
+
+h2{
+    font-size: 1em;
+    padding-top: 1em;
+    padding-bottom: 1em;
+}
+
+header>ul>li{
+    display: inline;
+    padding-left: 20px;
+}
+
+header{
+    height: 70px;
+    /*
+    This line height makes the text v centered.
+    */
+    line-height: 4em;
+    padding-left: 25px;
+    margin-bottom: 10px;
+    background-color: #0475BA;
+    color: white;
+}
+
+dl{
+    margin-left:  10px;
+    margin-right: 10px;
+}
+
+dt{
+    float: left;
+}
+
+dt+dd{
+    text-align: right;
+}
+
+dd{
+    margin-left: 0;
+    margin-bottom: 1em;
+}
+
+.exp dt{
+    font-weight: 700;
+}
+
+.exp dt+dd{
+    font-weight: 700;
+}
+
+h2{
+    text-align: center;
+}
+
+header>h2{
+    font-weight: 400;
+    font-size: 1.2em;
+    text-align: left;
+    margin: 0;
+}
+
+
+section:nth-child(odd), footer{
+  background-color: #0475BA;
+  color: white;
+}
+
+a{
+    color: white;
+}
+
+
+section:nth-child(even)>h2{
+    color: #0457BA;
+}
+
+
+img{
+    width: 150px;
+    border-radius: 50%;
+}
+
+
+section:nth-of-type(1){
+    text-align: center;
+}
+
+
+section, footer{
+    padding-left: 10px;
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+
+footer a{
+    color: white;
+    padding-left: 40px;
+}
+
+@media screen and (min-width: 768px) {
+    section:first-of-type>div{
+        width: 45%;
+        display: inline-block;
+    }
+    section:nth-of-type(n+2), header{
+        padding-left: 250px;
+        padding-right: 250px;
+    }
+    header ul{
+        padding: 0;
+    }
+    footer div{
+        width: 45%;
+        display: inline-block;
+    }
+}
