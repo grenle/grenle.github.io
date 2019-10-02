@@ -141,6 +141,9 @@ footer a{
         width: 45%;
         display: inline-block;
     }
+    section:first-of-type h2{
+        text-align: center;
+    }
     h2{
         text-align: left;
     }
