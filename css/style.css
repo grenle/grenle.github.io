@@ -16,6 +16,9 @@ h1, h2, h3, h4, h5, h6{
     font-weight: 700;
 }
 
+h2{
+    text-align: center;
+}
 
 h1{
     font-size: 1.5em;
@@ -136,5 +139,8 @@ footer a{
     footer div{
         width: 45%;
         display: inline-block;
+    }
+    h2{
+        text-align: left;
     }
 }
