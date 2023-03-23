@@ -1,4 +1,8 @@
 #+TITLE: React Context --- simple!
+#+HTML_HEAD: <link rel="preconnect" href="https://fonts.googleapis.com">
+#+HTML_HEAD: <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+#+HTML_HEAD: <link href="https://fonts.googleapis.com/css2?family=Averia+Serif+Libre:wght@400;700&display=swap" rel="stylesheet">
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="../../style/style.css" />
 
 On commence simplement par créer l'application React toute
 simple, et démarrer VS Code. On est paresseux alors:

@@ -1,13 +1,55 @@
-#+TITLE: Homepage for Gregory Houldsworth (grenle)
+#+TITLE: Gregory Houldsworth (grenle)
 #+AUTHOR: Gregory Houldsworth
+#+HTML_HEAD: <meta name="viewport" content="width=device-width, initial-scale=1.0">
+#+HTML_HEAD: <link rel="preconnect" href="https://fonts.googleapis.com">
+#+HTML_HEAD: <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+#+HTML_HEAD: <link href="https://fonts.googleapis.com/css2?family=Averia+Serif+Libre:wght@400;700&display=swap" rel="stylesheet">
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="style/style.css" />
 
 [[file:assets/grenle-logo.svg]]
 
 Made with Org, file by file, until I get around to using the
-publish function. Works well enough. As you can tell, I'm
-not a UI/UX person.
+publish function. Works well enough. As you can tell, I'm a
+*NIX more than a UI/UX person.
 
-* Code
+Hello, I am a junior web dev
+
+* Supports d'apprentissage (fr)
+
+Quelques [[./wit/][documents]] pour aider celles et ceux qui souhaitent
+apprendre la programmation web. Elaborées avec les
+apprenantes de wit/social-builder.
+
+* Things I know
+
+I am a junior web dev, with the following skills:
+
+- ~Python~: used regularly and in a few open sources
+  projects.
+- ~JavaScript~: object of my bootcamp, used during my
+  internship at [[https://www.bubblebd.com/][Bubble]], where we also used [[https://expressjs.com/][Express]] , [[https://react.dev/][React]],
+  [[https://redux.js.org/][Redux]] and [[https://redux-saga.js.org/][Redux-Saga]]
+- ~Emacs LISP~: intermediate, working on a package of my own:
+- ~Scheme~ (Chicken / MIT/GNU), ~SML~: high beginner
+- ~Common Lisp~, ~Rust~, ~Prolog~: Beginner
+
+* Things I've done
+
+Projects you can look at:
+
+- [[https://github.com/grenle/grank][grank]] [Emacs Lisp] mode aware URL yanking
+- [[https://github.com/grenle/js-counters][js-counters]] [JavaScript] simple count-related js classes
+
+I have contributed JavaScript, TypeScript and Python to
+source projects:
+
+- [[https://github.com/kadiks/my_life_in_tech][my life in tech]]
+- [[https://github.com/kadiks/kwarantine][kwarantine]]
+- [[https://github.com/kadiks/jobsmap][jobsmap]]
+- [[https://github.com/kadiks/lexomni][lexomni]]
+
+You can easily see my contributions on GitHub, marked as
+grenle.
 
 * Supports d'apprentissage
 

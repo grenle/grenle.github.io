@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2023-03-23 jeu. 18:00 -->
+<!-- 2023-03-23 jeu. 18:33 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>React Context &#x2014; simple!</title>
@@ -193,6 +193,10 @@
     { background-color: #ffff00; color: #000000; font-weight: bold; }
   .org-svg { }
 </style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Averia+Serif+Libre:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="../../style/style.css" />
 </head>
 <body>
 <div id="content" class="content">
@@ -201,10 +205,10 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgadbf354">1. Nettoyage</a></li>
-<li><a href="#org25d05e4">2. Mis en place</a></li>
-<li><a href="#org11262b4">3. Passage de state</a></li>
-<li><a href="#org62a9915">4. Cap'tain Context to the Rescue</a></li>
+<li><a href="#org508990e">1. Nettoyage</a></li>
+<li><a href="#org1d81965">2. Mis en place</a></li>
+<li><a href="#org8172173">3. Passage de state</a></li>
+<li><a href="#orgfd14daa">4. Cap'tain Context to the Rescue</a></li>
 </ul>
 </div>
 </div>
@@ -231,8 +235,8 @@ donc pas.</li>
 bash (donc ça marche avec bash, sous Linux ou cmder).</li>
 </ul>
 
-<div id="outline-container-orgadbf354" class="outline-2">
-<h2 id="orgadbf354"><span class="section-number-2">1.</span> Nettoyage</h2>
+<div id="outline-container-org508990e" class="outline-2">
+<h2 id="org508990e"><span class="section-number-2">1.</span> Nettoyage</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 On a pas besoin d'un App aussi gros, hop, un coup d'éponge:
@@ -256,8 +260,8 @@ On a pas besoin d'un App aussi gros, hop, un coup d'éponge:
 </div>
 </div>
 
-<div id="outline-container-org25d05e4" class="outline-2">
-<h2 id="org25d05e4"><span class="section-number-2">2.</span> Mis en place</h2>
+<div id="outline-container-org1d81965" class="outline-2">
+<h2 id="org1d81965"><span class="section-number-2">2.</span> Mis en place</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 Ici on veut voir <code>Context</code>, pas faire une application utile,
@@ -283,7 +287,7 @@ On va écrire trois composants qui s'emboitent, <code>A</code>, <code>B</code>, 
 <code>C</code>. Sous src, on aura donc l'arborescence
 </p>
 
-<pre class="example" id="orgc3fdb23">
+<pre class="example" id="org8b0a532">
 ├── App.css
 ├── App.js
 ...
@@ -382,7 +386,7 @@ On va modifier un peut notre code:
 Notre arborescence de composant est maintenant:
 </p>
 
-<pre class="example" id="orgc2873f5">
+<pre class="example" id="org09392bd">
 ─── App
     │
     └── A
@@ -399,8 +403,8 @@ C.
 </div>
 </div>
 
-<div id="outline-container-org11262b4" class="outline-2">
-<h2 id="org11262b4"><span class="section-number-2">3.</span> Passage de state</h2>
+<div id="outline-container-org8172173" class="outline-2">
+<h2 id="org8172173"><span class="section-number-2">3.</span> Passage de state</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 Disons que nous avons un objet dans le state d'App qu'on
@@ -508,14 +512,14 @@ bien nettoyer ça.
 </div>
 </div>
 
-<div id="outline-container-org62a9915" class="outline-2">
-<h2 id="org62a9915"><span class="section-number-2">4.</span> Cap'tain Context to the Rescue</h2>
+<div id="outline-container-orgfd14daa" class="outline-2">
+<h2 id="orgfd14daa"><span class="section-number-2">4.</span> Cap'tain Context to the Rescue</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 On va commencer par créer un ChocolatContext
 </p>
 
-<pre class="example" id="org422d240">
+<pre class="example" id="org5306d77">
 ├── App.js
 ├── ChocoContext
 │   └── index.js
@@ -881,7 +885,7 @@ section devrait nous faire réfléchir&#x2026;
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: gregory</p>
-<p class="date">Created: 2023-03-23 jeu. 18:00</p>
+<p class="date">Created: 2023-03-23 jeu. 18:33</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

@@ -1,4 +1,8 @@
 #+TITLE: Session/Local Storage
+#+HTML_HEAD: <link rel="preconnect" href="https://fonts.googleapis.com">
+#+HTML_HEAD: <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+#+HTML_HEAD: <link href="https://fonts.googleapis.com/css2?family=Averia+Serif+Libre:wght@400;700&display=swap" rel="stylesheet">
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="../../style/style.css" />
 
 Pour stocker des informations au format clef/valeur, nous
 disposons de l'API Web Storage. Ces informations, au format

@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2023-03-23 jeu. 17:08 -->
+<!-- 2023-03-23 jeu. 18:27 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Utiliser Git et GitHub</title>
@@ -193,6 +193,10 @@
     { background-color: #ffff00; color: #000000; font-weight: bold; }
   .org-svg { }
 </style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Averia+Serif+Libre:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="../../style/style.css" />
 </head>
 <body>
 <div id="content" class="content">
@@ -201,32 +205,32 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org816915c">1. Pourquoi git? (ou Mercurial, Subversion, &#x2026;)</a></li>
-<li><a href="#orgf3a033c">2. La boucle</a></li>
-<li><a href="#org277d9dc">3. Git en action</a></li>
-<li><a href="#orga584135">4. Création d'un repo local+GitHub</a>
+<li><a href="#orgae3997d">1. Pourquoi git? (ou Mercurial, Subversion, &#x2026;)</a></li>
+<li><a href="#org75b213e">2. La boucle</a></li>
+<li><a href="#orge2d0c31">3. Git en action</a></li>
+<li><a href="#orgb7d4c74">4. Création d'un repo local+GitHub</a>
 <ul>
-<li><a href="#org795b353">4.1. La méthode experte</a></li>
+<li><a href="#org9142fc5">4.1. La méthode experte</a></li>
 </ul>
 </li>
-<li><a href="#orgdedf039">5. Ressources</a></li>
-<li><a href="#org9dd50a0">6. En cas de souci</a>
+<li><a href="#org4f7a266">5. Ressources</a></li>
+<li><a href="#org18c4abb">6. En cas de souci</a>
 <ul>
-<li><a href="#orgceac2ab">6.1. J'ai fait commit sans -m</a></li>
+<li><a href="#org3d714f5">6.1. J'ai fait commit sans -m</a></li>
 </ul>
 </li>
-<li><a href="#org68963c4">7. Branches Git</a></li>
-<li><a href="#org82fe223">8. Pratique</a>
+<li><a href="#orga8a25a5">7. Branches Git</a></li>
+<li><a href="#org5697da1">8. Pratique</a>
 <ul>
-<li><a href="#org315881f">8.1. Mise en place</a></li>
+<li><a href="#org222d2d5">8.1. Mise en place</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org816915c" class="outline-2">
-<h2 id="org816915c"><span class="section-number-2">1.</span> Pourquoi git? (ou Mercurial, Subversion, &#x2026;)</h2>
+<div id="outline-container-orgae3997d" class="outline-2">
+<h2 id="orgae3997d"><span class="section-number-2">1.</span> Pourquoi git? (ou Mercurial, Subversion, &#x2026;)</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 un DVCS <sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup> un outil
@@ -236,7 +240,7 @@ approximer l'effet en créant un fichier par version. On se
 retrouverait vite avec, par exemple:
 </p>
 
-<pre class="example" id="org7eddba4">
+<pre class="example" id="org4a9bab0">
 index_version_1.html
 index_version_2.html
 index_version_3.html
@@ -247,7 +251,7 @@ Pas top et nous n'avons pas qu'un fichier, si on ajoute
 simplement une feuille de style:
 </p>
 
-<pre class="example" id="org841ed0e">
+<pre class="example" id="orgfdef4bc">
 index_version_1.html
 index_version_2.html
 index_version_3.html
@@ -304,8 +308,8 @@ que l'on peut très facilement héberger soi-même.
 </div>
 </div>
 
-<div id="outline-container-orgf3a033c" class="outline-2">
-<h2 id="orgf3a033c"><span class="section-number-2">2.</span> La boucle</h2>
+<div id="outline-container-org75b213e" class="outline-2">
+<h2 id="org75b213e"><span class="section-number-2">2.</span> La boucle</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 Un VCS permet de gérer les changements apportés à un
@@ -333,8 +337,8 @@ modifications.</li>
 </div>
 </div>
 
-<div id="outline-container-org277d9dc" class="outline-2">
-<h2 id="org277d9dc"><span class="section-number-2">3.</span> Git en action</h2>
+<div id="outline-container-orge2d0c31" class="outline-2">
+<h2 id="orge2d0c31"><span class="section-number-2">3.</span> Git en action</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 Voici une interaction dans le terminal qui illustre les
@@ -406,8 +410,8 @@ du code.
 </div>
 </div>
 
-<div id="outline-container-orga584135" class="outline-2">
-<h2 id="orga584135"><span class="section-number-2">4.</span> Création d'un repo local+GitHub</h2>
+<div id="outline-container-orgb7d4c74" class="outline-2">
+<h2 id="orgb7d4c74"><span class="section-number-2">4.</span> Création d'un repo local+GitHub</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 Malheureusement, notre git est local, personne ne peut
@@ -422,7 +426,7 @@ un click fatiguant, on va directement sur
 </p>
 
 
-<div id="orgeb4cde2" class="figure">
+<div id="orge2955af" class="figure">
 <p><img src="../../assets/github-new-repo-00.png" alt="github-new-repo-00.png" />
 </p>
 </div>
@@ -432,7 +436,7 @@ On arrive sur la page de création de repo:
 </p>
 
 
-<div id="orgbf0f891" class="figure">
+<div id="org21c3412" class="figure">
 <p><img src="../../assets/github-new-repo-01.png" alt="github-new-repo-01.png" />
 </p>
 </div>
@@ -443,7 +447,7 @@ que c'est une boisson mignonne et sympa.
 </p>
 
 
-<div id="org0471460" class="figure">
+<div id="org4902ad9" class="figure">
 <p><img src="../../assets/github-new-repo-02.png" alt="github-new-repo-02.png" />
 </p>
 </div>
@@ -453,7 +457,7 @@ On click sur <code>Create Repository</code>
 </p>
 
 
-<div id="orgb8805f2" class="figure">
+<div id="org92c58e4" class="figure">
 <p><img src="../../assets/github-new-repo-03.png" alt="github-new-repo-03.png" />
 </p>
 </div>
@@ -464,7 +468,7 @@ utiles sur les prochaines étapes.
 </p>
 
 
-<div id="org69bfd92" class="figure">
+<div id="org259225a" class="figure">
 <p><img src="../../assets/github-new-repo-04.png" alt="github-new-repo-04.png" />
 </p>
 </div>
@@ -502,8 +506,8 @@ similiare à la première stratégie.
 </p>
 </div>
 
-<div id="outline-container-org795b353" class="outline-3">
-<h3 id="org795b353"><span class="section-number-3">4.1.</span> La méthode experte</h3>
+<div id="outline-container-org9142fc5" class="outline-3">
+<h3 id="org9142fc5"><span class="section-number-3">4.1.</span> La méthode experte</h3>
 <div class="outline-text-3" id="text-4-1">
 <p>
 Avec l'adresse que nous donne GitHub, que l'on copie, on va
@@ -602,8 +606,8 @@ page, il y a le bouton pour effacer le repo.
 </div>
 </div>
 
-<div id="outline-container-orgdedf039" class="outline-2">
-<h2 id="orgdedf039"><span class="section-number-2">5.</span> Ressources</h2>
+<div id="outline-container-org4f7a266" class="outline-2">
+<h2 id="org4f7a266"><span class="section-number-2">5.</span> Ressources</h2>
 <div class="outline-text-2" id="text-5">
 <p>
 Voici quelques liens utiles pour réviser les bases et aller
@@ -618,12 +622,12 @@ plus loin:
 </div>
 </div>
 
-<div id="outline-container-org9dd50a0" class="outline-2">
-<h2 id="org9dd50a0"><span class="section-number-2">6.</span> En cas de souci</h2>
+<div id="outline-container-org18c4abb" class="outline-2">
+<h2 id="org18c4abb"><span class="section-number-2">6.</span> En cas de souci</h2>
 <div class="outline-text-2" id="text-6">
 </div>
-<div id="outline-container-orgceac2ab" class="outline-3">
-<h3 id="orgceac2ab"><span class="section-number-3">6.1.</span> J'ai fait commit sans -m</h3>
+<div id="outline-container-org3d714f5" class="outline-3">
+<h3 id="org3d714f5"><span class="section-number-3">6.1.</span> J'ai fait commit sans -m</h3>
 <div class="outline-text-3" id="text-6-1">
 <p>
 Si VS Code s'ouvre, écrivez votre message de commit sur la
@@ -642,7 +646,7 @@ Si vous voyez ça:
 </p>
 
 
-<div id="orgb3d1978" class="figure">
+<div id="org97ade47" class="figure">
 <p><img src="../../assets/commit-nano.png" alt="commit-nano.png" />
 </p>
 </div>
@@ -658,7 +662,7 @@ Si vous voyez ce truc:
 </p>
 
 
-<div id="org687dc8b" class="figure">
+<div id="orgdec3903" class="figure">
 <p><img src="../../assets/commit-vi.png" alt="commit-vi.png" />
 </p>
 </div>
@@ -689,8 +693,8 @@ très bien même sur du materiel limité.
 </div>
 </div>
 
-<div id="outline-container-org68963c4" class="outline-2">
-<h2 id="org68963c4"><span class="section-number-2">7.</span> Branches Git</h2>
+<div id="outline-container-orga8a25a5" class="outline-2">
+<h2 id="orga8a25a5"><span class="section-number-2">7.</span> Branches Git</h2>
 <div class="outline-text-2" id="text-7">
 <p>
 Une branche permet de créer une chronologie alternative afin
@@ -720,7 +724,7 @@ suivant, chaque version du code, est un évènement dans une
 suite linéaire.
 </p>
 
-<pre class="example" id="org182a66d">
+<pre class="example" id="org4f99bd4">
 master-v1 -&gt; master-v2 -&gt; master-v3 -&gt; ...
 </pre>
 
@@ -733,7 +737,7 @@ de master v1:
 </p>
 
 
-<div id="orgb254dbc" class="figure">
+<div id="org22df284" class="figure">
 <p><img src="../../assets/git-branch-graph-1.png" alt="git-branch-graph-1.png" />
 </p>
 </div>
@@ -769,12 +773,12 @@ fonctionnalité qu'on ajoute.
 </div>
 </div>
 
-<div id="outline-container-org82fe223" class="outline-2">
-<h2 id="org82fe223"><span class="section-number-2">8.</span> Pratique</h2>
+<div id="outline-container-org5697da1" class="outline-2">
+<h2 id="org5697da1"><span class="section-number-2">8.</span> Pratique</h2>
 <div class="outline-text-2" id="text-8">
 </div>
-<div id="outline-container-org315881f" class="outline-3">
-<h3 id="org315881f"><span class="section-number-3">8.1.</span> Mise en place</h3>
+<div id="outline-container-org222d2d5" class="outline-3">
+<h3 id="org222d2d5"><span class="section-number-3">8.1.</span> Mise en place</h3>
 <div class="outline-text-3" id="text-8-1">
 <p>
 Avant toute chose, il nous faut un repo. Si c'est encore
@@ -783,7 +787,7 @@ flou, on voit plus haut, c'est expliqué. J'ai créé un repo
 j'y ai ajouté un fichier README.md avec le contenu suivant.
 </p>
 
-<pre class="example" id="org90d9684">
+<pre class="example" id="org9ec2c40">
 # Arboreal Adventures
     
 Le logiciel le plus véloce, le plus léger et le plus facile à installer du
@@ -799,7 +803,7 @@ exemple).
 </p>
 
 
-<div id="org9444e9e" class="figure">
+<div id="org7c5cfa6" class="figure">
 <p><img src="../../assets/github-lovely-readme.png" alt="github-lovely-readme.png" />
 </p>
 <p><span class="figure-number">Figure 1: </span>Visualisation du README.md sur GitHub</p>
@@ -839,7 +843,7 @@ Git est sympa, il nous prévient qu'il a Switched to branch
 AUTHORS.md dans VS Code. Le mien à le contenu suivant:
 </p>
 
-<pre class="example" id="orgc20e2e6">
+<pre class="example" id="orgfaece8e">
 # La super team
 
 - [Hiyam](http://www.example.com/hi) - CEO
@@ -876,7 +880,7 @@ Si on va sur notre repo, on voit un truc nouveau sur la page:
 </p>
 
 
-<div id="org4e3f39f" class="figure">
+<div id="orgde1804c" class="figure">
 <p><img src="../../assets/github-compare-and-merge.png" alt="github-compare-and-merge.png" />
 </p>
 <p><span class="figure-number">Figure 2: </span>Commencer la comparaison/fusion avec GitHub</p>
@@ -890,7 +894,7 @@ peut recevoir sans conflit les modification de add-authors:
 </p>
 
 
-<div id="orgfa059fb" class="figure">
+<div id="org991cb08" class="figure">
 <p><img src="../../assets/github-automerge-ok.png" alt="github-automerge-ok.png" />
 </p>
 <p><span class="figure-number">Figure 3: </span>Conflits ou absence the conflit pour une fusion the branche</p>
@@ -902,7 +906,7 @@ Et on a un bouton pour lancer ce fameux pull-request:
 </p>
 
 
-<div id="orgd2aa930" class="figure">
+<div id="org5f447b8" class="figure">
 <p><img src="../../assets/github-create-merge-request.png" alt="github-create-merge-request.png" />
 </p>
 <p><span class="figure-number">Figure 4: </span>Lancer la fusion</p>
@@ -921,7 +925,7 @@ fusion/l'inclusion de changements. Encore deux click. Et un:
 </p>
 
 
-<div id="org0db0a42" class="figure">
+<div id="orgf1d343a" class="figure">
 <p><img src="../../assets/github-merge-pull-request.png" alt="github-merge-pull-request.png" />
 </p>
 </div>
@@ -931,7 +935,7 @@ Et deux, pour être sûr d'être sûr:
 </p>
 
 
-<div id="org7f7f94b" class="figure">
+<div id="org43da440" class="figure">
 <p><img src="../../assets/github-merge-pull-request-confirm.png" alt="github-merge-pull-request-confirm.png" />
 </p>
 </div>
@@ -941,7 +945,7 @@ Git hub nous propose ensuite d'effacer la branche inutile:
 </p>
 
 
-<div id="org64c2c0a" class="figure">
+<div id="orgf6115ae" class="figure">
 <p><img src="../../assets/github-merge-pull-request-delete-branch.png" alt="github-merge-pull-request-delete-branch.png" />
 </p>
 </div>
@@ -1016,7 +1020,7 @@ cookie, avec un verre de lait.
 </div></div>
 <div id="postamble" class="status">
 <p class="author">Author: Gregory Houldsworth</p>
-<p class="date">Created: 2023-03-23 jeu. 17:08</p>
+<p class="date">Created: 2023-03-23 jeu. 18:27</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
