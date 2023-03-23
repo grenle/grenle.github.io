@@ -1,0 +1,198 @@
+#+TITLE: Session/Local Storage
+
+Pour stocker des informations au format clef/valeur, nous
+disposons de l'API Web Storage. Ces informations, au format
+texte, sont disponibles globalement, elles ne sont pas
+concernés par les champs lexicaux et le
+ramasse-miettes. Bien pratique, par exemple, pour les
+préférences utilisateurs, mais attention à ne pas exposer de
+secret (clef API, jwt) ou d'informations pouvant participer
+à la désanonymisation des données. Il suffit d'un bug dans
+l'implémentation de l'API du navigateur ou d'un librairie
+malicieuse!
+
+Cette API expose deux méchanismes: localStorage et
+sessionStorage. La différence entre les deux est que
+sessionStorage est vidé lorsque l'onglet ou le navigateur
+sont fermés tandis que localStorage persiste.
+
+Les données sont sockées séparément pour chaque origine, une
+origine étant définie par un protocol (ex: http), un nom
+d'hôte (ex: www.example.com) et un port (ex: 80, le défaut
+pour HTTP). Cela signifie que http://www.example.com/ et
+https://www.example.com/ ne partagent pas le stockage.
+
+Ces règles sont les même que pour le méchanisme de sécurité
+[[https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy][same-origin]] policy bien expliqué sur MDN.
+
+Il n'est pas possible de se reposer entièrement sur cette API.
+
+- La zone de stockage peut être pleine, un appel à
+  ~.setItem~ génère une exception avec l'attribut ={name:
+  'QuotaExceededError'}=
+- La zone de stockage peut avoir une limite de taille de
+  zero, tout appel à ~setItem~ générant la même exception
+  que #1.
+- Dans certains contextes (ex un onglet vide fraichement
+  ouvert) l'appel à ~localStorage~ peut produire un
+  exception avec l'attribut ={name:
+  'NS_ERROR_NOT_AVAILABLE'}=
+- Il est possible qu'aucune exception ne soit générée mais
+  que ~sessionStorage~ ne conserve pas les données, par
+  exemple dans le contexte de navigation 'privée' de
+  certains navigateurs
+- Le ~localStorage~ se comporte un peu comme un objet global
+  persistant, et nous savons déjà utiliser un objet. La
+  syntaxe spécifique à l'API Web Storage est différente mais
+  il est possible d'utiliser la syntaxe des objets, sauf
+  pour l'effacement d'une paire et la purge (qui n'existe
+  pas vraiment pour les objets sauf s'ils sont assignés à
+  window).
+
+|              | Object                         | localStorage                            |
+| constructeur | [new] Object()                 | N/A                                     |
+| literal      | { youpi: 'youpla' }            | N/A                                     |
+| assignation  |                                | localStorage.setItem('youpi', 'youpla') |
+|              | monObject.youpi = 'youpla'     | localStorage.youpi = 'youpla'           |
+|              | monObject['youpi']' = 'youpla' | localStorage['youpi']' = 'youpla'       |
+| requête      |                                | localStorage.getItem('youpi')           |
+|              | monObject.youpi                | localStorage.youpi                      |
+|              | monObject['youpi']             | localStorage['youpi']'                  |
+| effacement   | delete o.youpi                 | localStorage.removeItem('youpi')        |
+| purge        | N/A                            | localStorage.clear()                    |
+
+* Conversation avec localStorage
+
+Il n'est pas nécessaire d'utiliser le prefix ~window~ sauf
+s'il existe un risque de collision avec un autre objet
+synonyme.
+
+#+begin_src javascript
+>> localStorage
+Storage { length: 0 }
+
+// on peut stocker une information de plusieurs manières.
+
+>> localStorage.dormeuse = 'toute mignonne'
+"toute mignonne"
+
+>> localStorage.tetsuo = 'est très beau'
+"est très beau"
+
+>> localStorage.setItem('foo', 'bar')
+undefined
+
+>> localStorage
+Storage { tetsuo: "est très beau", foo: "bar", dormeuse: "toute mignonne", length: 3 }
+
+// On peut aussi récupérer une information de plusieurs manières
+
+>> localStorage.dormeuse
+"toute mignonne"
+
+>> localStorage['dormeuse']
+"toute mignonne"
+
+>> localStorage.getItem('dormeuse')
+"toute mignonne"
+
+// comment faire pour stocker autre chose que des chaines de caractères?
+// JSON to the rescue!
+
+>> localStorage['langages'] = JSON.stringify({
+    beau: 'Scheme',
+    sympa: 'Python',
+    cool: 'Forth',
+    pabo: 'Java'})
+
+// La REPL nous répond avec la valeur qui est une chaine de caractères:
+"{\"beau\":\"Scheme\",\"sympa\":\"Python\",\"cool\":\"Forth\",\"pabo\":\"Java\"}"
+
+// Et maintenant on récupère la bestiole:
+
+>> JSON.parse(localStorage.langages)
+Object { beau: "Scheme", sympa: "Python", cool: "Forth", pabo: "Java" }
+
+​// On voit qu'on récupère bien un objet, succès! Mais que s'est-il passé?
+// JSON.stringify permet de transformer un objet JavaScript en
+// chaine de caractère
+// JSON.parse permet de transformer une chaine de caractère en objet
+// javascript.
+
+// Ce genre de transformation d'un objet en un format stockable et l'inverse
+// s'appellent sérialisation et désérialisation
+
+// Ne le mettez pas à toutes les sauces, ça impressionne la première fois seulement.
+#+end_src
+
+On notera que l'assignation façon objet retourne la valeur
+envoyée alors que l'appel à setItem retourne
+undefined. Allez savoir.
+
+* Exercices!
+
+Créez vous un petit repo, par exemple localStorageAdventures
+et mettez-y les fichiers contenu dans cette archive.
+
+Ajoutez votre code au fichier js selon vos besoins. Pour
+mémoire window.onload = <unefonction> execute unefonction
+une fois le DOM prêt. Sans ça, une manipulation des éléments
+peut échouer car ils n'existent pas encore. A vous de voir
+s'il vous faut l'utiliser ou pas.
+
+1. On commence simple, stockez le nom de votre créature
+   imaginaire préférée associée à la clef creature. En
+   objet, on aurait écrit {creature: 'Tsukumogami'}
+2. Affichez cette créature dans la console.
+3. Stockez sous cette même clef un objet décrivant la
+   créature avec les propriétés {name, form, habitat} et
+   toute autre information que vous jugez pertinente.
+4. Dans le html créez des élements (à vous de choisir
+   lesquels) avec les id correspondants aux informations de
+   votre créature. Affichez avec les informations que vous
+   avez stockées précédemment.
+
+** Bonus
+
+Il est possible de réagir aux modifications des données du
+~localStorage~ (ça n'est pas vrai du ~sessionStorage~). Pour
+se faire, comme pour les autres évènements, on utilise
+~window.addEventListener('storage', <mafonction>)~
+
+Quand le stockage est modifié, la fonction recevera un
+argument qui est un objet avec, entres autres, les
+propriétés key (la clef associée à la modifiation) et
+oldValue / newValue qui représent l'ancienne et la nouvelle
+valeur respectivement.
+
+1. Stockez plusieurs créatures dans un array dans le
+   localStorage sous la clef creatures.
+2. Récupérez les créatures et ffichez leurs noms sous la
+   formes d'éléments clickables (boutons, liens, etc).
+3. Stockez également une des créatures sous la clef
+   favouredBeast
+4. Affichez les informations de la créature préférée
+   (favouredBeast) comme précédemment
+5. Faites en sorte que lorsque l'utilisateur clique le nom
+   d'une créature, elle est stockée sous favouredBeast
+6. Ajoutez une fonction qui, lorsque le stockage change,
+   change l'affichage pour refléter le choix de créature
+   préférée.
+7. Ajoutez un bouton qui stocke une valeur aléatoire sous
+   une autre clef comme thaisoup. Vérifiez que lorsque l'on
+   clique sur le bouton random, la fonction que vous
+   utilisez pour changer l'affichage est appelée mais ne
+   fait rien car ça n'est pas la bonne clef qui est
+   modifiée.
+
+Et voilà! Vous avez survécu! Tâchez de vous récompenser avec
+un bon cookie. Et si vous avez une idée intéressante
+d'utilisation du localStorage, n'hésitez pas à la coder!
+
+* Ressources
+
+- [[https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API][Présentation Générale]] de l'API Web Storage sur MDN
+- [[https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API%22][Guide d'utilisation]] sur MDN
+- Le [[https://developer.mozilla.org/en-US/docs/Web/API/StorageEvent][StorageEvent]], toujours sur MDN
+- La [[https://html.spec.whatwg.org/multipage/webstorage.html#webstorage][spécification]] de l'API par le WHATWG, contenant des
+  sections déstinées aux developpeurs web.

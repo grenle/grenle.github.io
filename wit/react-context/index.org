@@ -1,0 +1,573 @@
+#+TITLE: React Context --- simple!
+
+On commence simplement par créer l'application React toute
+simple, et démarrer VS Code. On est paresseux alors:
+
+#+begin_src bash
+npx create-react-app toy-context && cd $_ && code .
+#+end_src
+
+Pour mémoire:
+
+- ~&&~ permet de lier des commandes qui s'executent les unes
+  après les autres. La chaîne est brisée si une des
+  commandes échoue et les commandes suivantes ne s'executent
+  donc pas.
+- ~$_~ est le dernier argument de la commande précédente en
+  bash (donc ça marche avec bash, sous Linux ou cmder).
+
+* Nettoyage
+
+On a pas besoin d'un App aussi gros, hop, un coup d'éponge:
+
+#+begin_src js
+import './App.css'
+
+
+function App() {
+  return (
+    <div>
+      youhou
+    </div>
+  )
+}
+
+export default App
+#+end_src
+
+* Mis en place
+
+Ici on veut voir ~Context~, pas faire une application utile,
+nous isolons autant que possible le problème pour n'avoir
+que lui a examiner. On va complètement éliminer:
+
+- les questions de styles
+- les questions d'utilité
+- les bons usages du code (hop, fenêtre)
+- toute tentative de faire une application qui serve
+
+L'utilité d'avoir un ~Context~ est de pouvoir consommer des
+props n'importe où dans l'arbre des composants sans avoir à
+passer des props partout.
+
+On va écrire trois composants qui s'emboitent, =A=, =B=, et
+=C=. Sous src, on aura donc l'arborescence
+
+#+begin_example
+├── App.css
+├── App.js
+...
+├── components
+│   ├── A
+│   │   └── index.jsx
+│   ├── B
+│   │   └── index.jsx
+│   └── C
+│       └── index.jsx
+...
+#+end_example
+
+Si vous avez vos préférences (par exemple avoir A.jsx
+directement sans répertoire A, faites comme vous préférez).
+
+Chaque composant va commencer tout simple:
+
+#+CAPTION: Composant A
+#+begin_src js
+export default function A(){
+    return null
+}
+#+end_src
+
+#+CAPTION: Composant B
+#+begin_src js
+export default function B(){
+    return null
+}
+#+end_src
+
+#+CAPTION: Composant C
+#+begin_src js
+export default function C(){
+    return null
+}
+#+end_src
+
+Hmm, l'idée est quand même de pouvoir accéder à des props
+plus haut dans l'arbre des composants sans les passer
+explicitement.
+
+On va modifier un peut notre code:
+
+#+CAPTION: APP
+#+begin_src js
+import './App.css'
+
+import A from './components/A'
+
+function App() {
+  return (
+    <A />
+  )
+}
+
+export default App
+#+end_src
+
+
+#+CAPTION: A
+#+begin_src js
+import B from '../B'
+
+export default function A(){
+    return <B />
+}
+#+end_src
+
+#+CAPTION: B
+#+begin_src js
+import C from '../C'
+
+export default function B(){
+    return <C />
+}
+#+end_src
+
+#+CAPTION: C
+#+begin_src js
+export default function C(){
+    return <p>Leaf</p>
+}
+#+end_src
+
+Notre arborescence de composant est maintenant:
+
+#+begin_example
+─── App
+    │
+    └── A
+        │
+        └── B
+            │
+            └── C
+#+end_example
+
+Le parfait terrain pour essayer de passer des props de App à
+C.
+
+* Passage de state
+
+Disons que nous avons un objet dans le state d'App qu'on
+aimerait passer à C, par exemple
+
+#+CAPTION: example de state
+#+begin_src js
+[
+    {nom: 'banane',     compatibilitéChocolat: 'excellente' },
+    {nom: 'gingembre',  compatibilitéChocolat: 'excellente' },
+    {nom: 'choux vert', compatibilitéChocolat: 'bof' },
+    {nom: 'Gribouille', compatibilitéChocolat:  null }
+]
+#+end_src
+
+Il est possible que nous ayons obtenu cet objet via un
+fetch, c'est sans importance, on se concentre sur ~Context~.
+
+Du coup, on modifie =App=:
+
+#+begin_src js
+import './App.css'
+
+import { useEffect, useState } from 'react'
+
+import A from './components/A'
+
+const chocoInit = [
+  {nom: 'banane',     compatibilitéChocolat: 'excellente' },
+  {nom: 'gingembre',  compatibilitéChocolat: 'excellente' },
+  {nom: 'choux vert', compatibilitéChocolat: 'bof' },
+  {nom: 'Gribouille', compatibilitéChocolat:  null }
+]
+
+function App() {
+  const [ chocoTable, setChocoTable ] = useState([])
+  // On aurait pu s'en passer mais c'est pour la forme:
+  useEffect(() => setChocoTable(chocoInit), [])
+  return (
+    <A chocoTable={chocoTable} />
+  )
+}
+
+export default App
+#+end_src
+
+Comme dit dans le code, on aurait pu se passer du
+~useEffect~ mais on veut quand même avoir quelque chose de
+cohérent. C'est aussi l'occasion de revoir le second
+argument à ~userEffect~: il détermine les valeurs dont les
+changements provoquent un autre appel à ~useEffect~. Nous ne
+voulons faire notre ~setChocoTable~ qu'une seule fois, nous
+lui passons donc un array vide: on ne rappelle jamais
+~useEffect~.
+
+Du coup, comment faire pour que C ai accès à notre table
+d'ingrédients? Avec les props, il faut passer la table à
+travers A et B pour enfin les transmettre à C:
+
+#+CAPTION: A
+#+begin_src js
+import B from '../B'
+
+export default function A(props){
+    const { chocoTable } = props
+    return <B chocoTable={chocoTable} />
+}
+#+end_src
+
+#+CAPTION: B
+#+begin_src js
+import C from '../C'
+
+export default function B(props){
+    const { chocoTable } = props
+    return <C chocoTable={chocoTable} />
+}
+#+end_src
+
+#+CAPTION: C
+#+begin_src js
+export default function C(props){
+    const { chocoTable } = props
+    return <>
+        {chocoTable.map( item => <p key={item.nom}>{item.nom}</p>)}
+    </>
+}
+#+end_src
+
+Beuh! Tous nos composants parlent de chocoTable maintenant,
+dégeu! On en a besoin que dans App et dans C! On aimerait
+bien nettoyer ça.
+
+* Cap'tain Context to the Rescue
+
+On va commencer par créer un ChocolatContext
+
+#+begin_example
+├── App.js
+├── ChocoContext
+│   └── index.js
+├── components
+│   ├── A
+│   │   └── index.jsx
+│   ├── B
+│   │   └── index.jsx
+│   └── C
+│       └── index.jsx
+#+end_example
+
+Avec le contenu suivant:
+
+#+begin_src js
+import { createContext } from 'react'
+
+const chocoInit = [
+    {nom: 'banane',     compatibilitéChocolat: 'excellente' },
+    {nom: 'gingembre',  compatibilitéChocolat: 'excellente' },
+    {nom: 'choux vert', compatibilitéChocolat: 'bof' },
+    {nom: 'Gribouille', compatibilitéChocolat:  null }
+]
+
+export default createContext(chocoInit)
+#+end_src
+
+On va éliminer toutes les props et n'utiliser que le context
+dans un premier temps, le plus simplement possible.
+
+#+CAPTION: App
+#+begin_src js
+import './App.css'
+
+import A from './components/A'
+
+function App() {
+  return (
+      <A />
+  )
+}
+
+export default App
+#+end_src
+
+#+CAPTION: A
+#+begin_src js
+import B from '../B'
+
+function A(){
+    return <B />
+}
+
+export default A
+#+end_src
+
+#+CAPTION: B
+#+begin_src js
+import C from '../C'
+
+export default function B(props){
+    return <C  />
+}
+#+end_src
+
+#+CAPTION: C
+#+begin_src js
+import ChocoContext from "../../ChocoContext"
+
+function C(props){
+    console.log(props)
+    const { chocoTable } = props
+    return <>
+        {chocoTable.map( item => <p key={item.nom}>{item.nom}</p>)}
+    </>
+}
+
+function WrappedC(){
+    return (
+        <ChocoContext.Consumer>
+            {props => <C chocoTable={props}/>}
+        </ChocoContext.Consumer>
+    )
+}
+
+export default WrappedC
+#+end_src
+
+Ca fonctionne (si, si) mais c'est tout étrange ce
+truc...Voyons.
+
+On a retrouvé notre =C= comme avant. Nous n'y touchons
+pas. Mais nous ne l'exportons plus. Au lieu de =C=, nous
+exportons une version enrobée d'un consommateur du context
+~ChocoContext~ qui s'appelle, surprise,
+~ChocoContext.Consumer~.
+
+A l'intérieur de ce ~Consumer~, on a une fonction qui a un
+paramètre, le contenu du contexte, et qui retourne notre
+composant avec ses ~props~ qui ne viennent plus de son
+parent mais du contexte lui-même.
+
+Pour celles qui n'aiment pas ~props~ (je ne regarde
+personne) mais qui veulent faire du code propre, on peut
+écrire:
+
+#+begin_src js
+import ChocoContext from "../../ChocoContext"
+
+function C(props){
+    console.log(props)
+    const { chocoTable } = props
+    return <>
+        {chocoTable.map( item => <p key={item.nom}>{item.nom}</p>)}
+    </>
+}
+
+function WrappedC(){
+    return (
+        <ChocoContext.Consumer>
+            {chocoTable => <C chocoTable={chocoTable}/>}
+        </ChocoContext.Consumer>
+    )
+}
+
+export default WrappedC
+#+end_src
+
+Ca marche avec un ~Context~ tout simple mais ça ne durera
+pas...On va voir ça rapidement.
+
+Vous verrez dans la doc que dans ~App~ on peut mettre un
+~ChocoContext.Provider~ qui fait écho au ~Consumer~ et qui
+envoie le contexte vers le bas. Ca n'est utile, dans les cas
+simples, que si on veut changer la valeur par défaut du
+contexte. On peut imaginer un composant qui reçoit les
+defauts et un autre, dans un =<ChocoContext.Provider
+value={...}></ChocoContext.Provider>=, qui reçoit les valeurs
+spécifiques dénotées par paresse par ... 
+
+Bon, c'est pas tout ça mais si on veut lire *et* modifier le
+contexte?
+
+Et bien, c'est moins élégant. Rappelez vous que React
+encourage un style "fonctionnel". Par exemple on ne modifie
+pas directement le ~state~, on utilise ~setState~ avec un
+/nouveau/ ~state~, une nouvelle valeur (qui peut être un
+fragment du ~state~ si on ne modifie qu'une partie). Si on
+modifie directement le ~state~, React ne va pas correctement
+rappeler ~render~ en cas de changement.
+
+Du coup, pour nous, celà signifie qu'on va devoir utiliser
+~useState~, quelque chose comme
+~const [maValeur, setMaValeur]= useState(valeurInitiale)~.
+
+Ensuite il va falloir passer ~setMaValeur~ dans l'attribut
+~value~ du provider. Ou une fonction qui appelle
+~setMaValeur~, ce que nous allons faire pour rester simple.
+
+Nous allons aussi devoir modifier notre contexte pour y
+faire une place à notre fonction de modification.
+
+#+CAPTION: ChocoContext
+#+begin_src js
+import { createContext } from 'react'
+
+// La valeur initiale, séparé pour clarifier
+const chocoTableInit = [
+    {nom: 'banane',     compatibilitéChocolat: 'excellente' },
+    {nom: 'gingembre',  compatibilitéChocolat: 'excellente' },
+    {nom: 'choux vert', compatibilitéChocolat: 'bof' },
+    {nom: 'Gribouille', compatibilitéChocolat:  null }
+]
+
+// chocoTable est vide, maintenant, il sera initialisé avec
+// chocoTableInit dans le state d'App On a séparé l'argument
+// de createContext pour n'y passer que le nom, pour
+// clarifié aussi
+const chocoInit = {
+    chocoTable: [],
+    chocoShake: () => {}
+}
+
+const ChocoContext = createContext(chocoInit)
+
+// on exporte donc à la fois le context vide mais avec les
+// bonnes structures et les valeurs initiales
+export { ChocoContext, chocoTableInit }
+App
+import './App.css'
+
+import { useState } from 'react'
+
+import A from './components/A'
+
+import { ChocoContext, chocoTableInit } from './ChocoContext'
+
+function App() {
+  // Alors... La valeur initiale du state chocoTable est
+  // initialisée avec la valeur de chocoTableInit qui est
+  // importée du module ChocoContexte
+  // Gratuit: useState nous donne une procédure pour
+  // modifier ce state, nous l'appelons...setChocoTable.
+  const [ chocoTable, setChocoTable ] = useState(chocoTableInit)
+  // Pour ne pas avoir à charger le composant A, nous
+  // inventons une fonction qui utilise setChocoTable sans
+  // paramètres. C'est cette fonction que nous passons dans
+  // l'attribut value du Provider, avec chocoTable qui fait
+  // partie du state d'App Vous noterez les doubles
+  // moustaches: on passe un objet à value et en JSX on
+  // enferme les expressions javascript dans des {}. Double
+  // dose.
+  const chocoShake = () => setChocoTable([...chocoTable].reverse())
+  return (
+    <ChocoContext.Provider value={{chocoTable, chocoShake}}>
+      <A />
+    </ChocoContext.Provider>
+  )
+}
+
+export default App
+#+end_src
+
+#+CAPTION: A
+#+begin_src js
+import B from '../B'
+
+import { ChocoContext } from '../../ChocoContext'
+
+function A(props){
+    // on est bien content d'avoir utilisé le nom props
+    // comme tous les autres composants React plutôt qu'un
+    // truc inventé...Ouf. Ici, on s'est simplifié la tache,
+    // on a qu'à passer le nom de la procédure chocoShake à
+    // onClick est c'est bon.
+    const { chocoShake } = props
+    return <>
+        <button onClick={chocoShake}>Reverse The Choco!</button>
+        <B />
+    </>
+}
+
+function WrappedA(){
+    return (
+        <ChocoContext.Consumer>
+            {props => <A {...props} />}
+        </ChocoContext.Consumer>
+    )
+}
+
+
+export default WrappedA
+#+end_src
+
+#+CAPTION: B
+#+begin_src js
+import C from '../C'
+
+export default function B(props){
+    return <C  />
+}
+#+end_src
+
+#+CAPTION: C
+#+begin_src js
+import { ChocoContext } from "../../ChocoContext"
+
+function C(props){
+    return <>
+        {props.chocoTable.map( item => <p key={item.nom}>{item.nom}</p>)}
+    </>
+}
+
+function WrappedC(){
+    return (
+        <ChocoContext.Consumer>
+            {props => <C {...props} />}
+        </ChocoContext.Consumer>
+    )
+}
+
+export default WrappedC
+#+end_src
+
+Et voilà, A peut modifier le contexte et =C= peut le
+consommer sans qu'on s'amuse à passer des props de
+partout. Voilà aussi une excellente manière de ternir le
+glorieux λ (la programmation fonctionnelle).
+
+Promis, Redux est moins beurk. Bien fait, c'est même un peu
+élégant.
+
+Please: envoyez vos remarques, questions, commentaires,
+critiques...N'hésitez surtout pas, surtout si c'est négatif:
+plus vous me communiquez vos retours et meilleurs seront les
+supports.
+
+Aussi, j'ai menti au début: ~$_~ c'est le dernier argument
+de la commande précédente dans certains contextes seulement.
+
+La sémantique de ~$_~ est, pour GNU Bash en tout cas:
+
+#+BEGIN_QUOTE
+($_, an underscore.) At shell startup, set to the pathname
+used to invoke the shell or shell script being executed as
+passed in the environment or argument list. Subsequently,
+expands to the last argument to the previous simple command
+executed in the foreground, after expansion. Also set to the
+full pathname used to invoke each command executed and
+placed in the environment exported to that command. When
+checking mail, this parameter holds the name of the mail
+file. --- [[https://www.gnu.org/software/bash/manual/bash.html][GNU Bash]]
+#+END_QUOTE
+
+Une dernière chose avant de vous laissez, aller lire la doc
+de React concernant le context, particulière la section
+intitulée [[https://reactjs.org/docs/context.html#before-you-use-context][Before You Use Context]]. La simple taille de cette
+section devrait nous faire réfléchir...

@@ -1,0 +1,18 @@
+#+TITLE: Quelques pages pour les ex-wit/social-builder
+#+AUTHOR: Gregory Houldsworth
+
+Voici les documents accompagnant la découverte de la
+programmation web. La porte est grande ouverte pour:
+
+- Corriger des erreurs, dans le code ou le texte
+- Créer d'autres documents, sur d'autres sujets
+- Approfondir certains points
+
+Les documents ne sont pas figés, n'hésitez pas. Le plus
+facile, sur [[https://discordapp.com/users/grenle#7696][discord]] (grenle#7696).
+
+Au programme:
+
+- [[./git/][Git et GitHub]]
+- [[./session-local-storage][Session/Local Storage]]
+- [[./react-context/][React.js Context]]

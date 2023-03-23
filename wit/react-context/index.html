@@ -1,0 +1,888 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2023-03-23 jeu. 18:00 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>React Context &#x2014; simple!</title>
+<meta name="author" content="gregory" />
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+</head>
+<body>
+<div id="content" class="content">
+<h1 class="title">React Context &#x2014; simple!</h1>
+<div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#orgadbf354">1. Nettoyage</a></li>
+<li><a href="#org25d05e4">2. Mis en place</a></li>
+<li><a href="#org11262b4">3. Passage de state</a></li>
+<li><a href="#org62a9915">4. Cap'tain Context to the Rescue</a></li>
+</ul>
+</div>
+</div>
+<p>
+On commence simplement par créer l'application React toute
+simple, et démarrer VS Code. On est paresseux alors:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">npx create-react-app toy-context &amp;&amp; <span style="color: #483d8b;">cd</span> $<span style="color: #a0522d;">_</span> &amp;&amp; code .
+</pre>
+</div>
+
+<p>
+Pour mémoire:
+</p>
+
+<ul class="org-ul">
+<li><code>&amp;&amp;</code> permet de lier des commandes qui s'executent les unes
+après les autres. La chaîne est brisée si une des
+commandes échoue et les commandes suivantes ne s'executent
+donc pas.</li>
+<li><code>$_</code> est le dernier argument de la commande précédente en
+bash (donc ça marche avec bash, sous Linux ou cmder).</li>
+</ul>
+
+<div id="outline-container-orgadbf354" class="outline-2">
+<h2 id="orgadbf354"><span class="section-number-2">1.</span> Nettoyage</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+On a pas besoin d'un App aussi gros, hop, un coup d'éponge:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-js"><span style="color: #a020f0;">import</span> <span style="color: #8b2252;">'./App.css'</span>
+
+
+<span style="color: #a020f0;">function</span> <span style="color: #0000ff;">App</span>() {
+  <span style="color: #a020f0;">return</span> (
+    &lt;div&gt;
+      youhou
+    &lt;/div&gt;
+  )
+}
+
+<span style="color: #a020f0;">export</span> <span style="color: #a020f0;">default</span> App
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org25d05e4" class="outline-2">
+<h2 id="org25d05e4"><span class="section-number-2">2.</span> Mis en place</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+Ici on veut voir <code>Context</code>, pas faire une application utile,
+nous isolons autant que possible le problème pour n'avoir
+que lui a examiner. On va complètement éliminer:
+</p>
+
+<ul class="org-ul">
+<li>les questions de styles</li>
+<li>les questions d'utilité</li>
+<li>les bons usages du code (hop, fenêtre)</li>
+<li>toute tentative de faire une application qui serve</li>
+</ul>
+
+<p>
+L'utilité d'avoir un <code>Context</code> est de pouvoir consommer des
+props n'importe où dans l'arbre des composants sans avoir à
+passer des props partout.
+</p>
+
+<p>
+On va écrire trois composants qui s'emboitent, <code>A</code>, <code>B</code>, et
+<code>C</code>. Sous src, on aura donc l'arborescence
+</p>
+
+<pre class="example" id="orgc3fdb23">
+├── App.css
+├── App.js
+...
+├── components
+│   ├── A
+│   │   └── index.jsx
+│   ├── B
+│   │   └── index.jsx
+│   └── C
+│       └── index.jsx
+...
+</pre>
+
+<p>
+Si vous avez vos préférences (par exemple avoir A.jsx
+directement sans répertoire A, faites comme vous préférez).
+</p>
+
+<p>
+Chaque composant va commencer tout simple:
+</p>
+
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 1: </span>Composant A</label><pre class="src src-js"><span style="color: #a020f0;">export</span> <span style="color: #a020f0;">default</span> <span style="color: #a020f0;">function</span> A(){
+    <span style="color: #a020f0;">return</span> <span style="color: #008b8b;">null</span>
+}
+</pre>
+</div>
+
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 2: </span>Composant B</label><pre class="src src-js"><span style="color: #a020f0;">export</span> <span style="color: #a020f0;">default</span> <span style="color: #a020f0;">function</span> B(){
+    <span style="color: #a020f0;">return</span> <span style="color: #008b8b;">null</span>
+}
+</pre>
+</div>
+
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 3: </span>Composant C</label><pre class="src src-js"><span style="color: #a020f0;">export</span> <span style="color: #a020f0;">default</span> <span style="color: #a020f0;">function</span> C(){
+    <span style="color: #a020f0;">return</span> <span style="color: #008b8b;">null</span>
+}
+</pre>
+</div>
+
+<p>
+Hmm, l'idée est quand même de pouvoir accéder à des props
+plus haut dans l'arbre des composants sans les passer
+explicitement.
+</p>
+
+<p>
+On va modifier un peut notre code:
+</p>
+
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 4: </span>APP</label><pre class="src src-js"><span style="color: #a020f0;">import</span> <span style="color: #8b2252;">'./App.css'</span>
+
+<span style="color: #a020f0;">import</span> A from <span style="color: #8b2252;">'./components/A'</span>
+
+<span style="color: #a020f0;">function</span> <span style="color: #0000ff;">App</span>() {
+  <span style="color: #a020f0;">return</span> (
+    &lt;A /&gt;
+  )
+}
+
+<span style="color: #a020f0;">export</span> <span style="color: #a020f0;">default</span> App
+</pre>
+</div>
+
+
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 5: </span>A</label><pre class="src src-js"><span style="color: #a020f0;">import</span> B from <span style="color: #8b2252;">'../B'</span>
+
+<span style="color: #a020f0;">export</span> <span style="color: #a020f0;">default</span> <span style="color: #a020f0;">function</span> A(){
+    <span style="color: #a020f0;">return</span> &lt;B /&gt;
+}
+</pre>
+</div>
+
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 6: </span>B</label><pre class="src src-js"><span style="color: #a020f0;">import</span> C from <span style="color: #8b2252;">'../C'</span>
+
+<span style="color: #a020f0;">export</span> <span style="color: #a020f0;">default</span> <span style="color: #a020f0;">function</span> B(){
+    <span style="color: #a020f0;">return</span> &lt;C /&gt;
+}
+</pre>
+</div>
+
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 7: </span>C</label><pre class="src src-js"><span style="color: #a020f0;">export</span> <span style="color: #a020f0;">default</span> <span style="color: #a020f0;">function</span> C(){
+    <span style="color: #a020f0;">return</span> &lt;p&gt;Leaf&lt;/p&gt;
+}
+</pre>
+</div>
+
+<p>
+Notre arborescence de composant est maintenant:
+</p>
+
+<pre class="example" id="orgc2873f5">
+─── App
+    │
+    └── A
+        │
+        └── B
+            │
+            └── C
+</pre>
+
+<p>
+Le parfait terrain pour essayer de passer des props de App à
+C.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org11262b4" class="outline-2">
+<h2 id="org11262b4"><span class="section-number-2">3.</span> Passage de state</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+Disons que nous avons un objet dans le state d'App qu'on
+aimerait passer à C, par exemple
+</p>
+
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 8: </span>example de state</label><pre class="src src-js">[
+    {nom: <span style="color: #8b2252;">'banane'</span>,     compatibilit&#233;Chocolat: <span style="color: #8b2252;">'excellente'</span> },
+    {nom: <span style="color: #8b2252;">'gingembre'</span>,  compatibilit&#233;Chocolat: <span style="color: #8b2252;">'excellente'</span> },
+    {nom: <span style="color: #8b2252;">'choux vert'</span>, compatibilit&#233;Chocolat: <span style="color: #8b2252;">'bof'</span> },
+    {nom: <span style="color: #8b2252;">'Gribouille'</span>, compatibilit&#233;Chocolat:  <span style="color: #008b8b;">null</span> }
+]
+</pre>
+</div>
+
+<p>
+Il est possible que nous ayons obtenu cet objet via un
+fetch, c'est sans importance, on se concentre sur <code>Context</code>.
+</p>
+
+<p>
+Du coup, on modifie <code>App</code>:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-js"><span style="color: #a020f0;">import</span> <span style="color: #8b2252;">'./App.css'</span>
+
+<span style="color: #a020f0;">import</span> { useEffect, useState } from <span style="color: #8b2252;">'react'</span>
+
+<span style="color: #a020f0;">import</span> A from <span style="color: #8b2252;">'./components/A'</span>
+
+<span style="color: #a020f0;">const</span> <span style="color: #a0522d;">chocoInit</span> = [
+  {nom: <span style="color: #8b2252;">'banane'</span>,     compatibilit&#233;Chocolat: <span style="color: #8b2252;">'excellente'</span> },
+  {nom: <span style="color: #8b2252;">'gingembre'</span>,  compatibilit&#233;Chocolat: <span style="color: #8b2252;">'excellente'</span> },
+  {nom: <span style="color: #8b2252;">'choux vert'</span>, compatibilit&#233;Chocolat: <span style="color: #8b2252;">'bof'</span> },
+  {nom: <span style="color: #8b2252;">'Gribouille'</span>, compatibilit&#233;Chocolat:  <span style="color: #008b8b;">null</span> }
+]
+
+<span style="color: #a020f0;">function</span> <span style="color: #0000ff;">App</span>() {
+  <span style="color: #a020f0;">const</span> [ <span style="color: #a0522d;">chocoTable</span>, <span style="color: #a0522d;">setChocoTable</span> ] = useState([])
+  <span style="color: #b22222;">// </span><span style="color: #b22222;">On aurait pu s'en passer mais c'est pour la forme:</span>
+  useEffect(() =&gt; setChocoTable(chocoInit), [])
+  <span style="color: #a020f0;">return</span> (
+    &lt;A chocoTable={chocoTable} /&gt;
+  )
+}
+
+<span style="color: #a020f0;">export</span> <span style="color: #a020f0;">default</span> App
+</pre>
+</div>
+
+<p>
+Comme dit dans le code, on aurait pu se passer du
+<code>useEffect</code> mais on veut quand même avoir quelque chose de
+cohérent. C'est aussi l'occasion de revoir le second
+argument à <code>userEffect</code>: il détermine les valeurs dont les
+changements provoquent un autre appel à <code>useEffect</code>. Nous ne
+voulons faire notre <code>setChocoTable</code> qu'une seule fois, nous
+lui passons donc un array vide: on ne rappelle jamais
+<code>useEffect</code>.
+</p>
+
+<p>
+Du coup, comment faire pour que C ai accès à notre table
+d'ingrédients? Avec les props, il faut passer la table à
+travers A et B pour enfin les transmettre à C:
+</p>
+
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 9: </span>A</label><pre class="src src-js"><span style="color: #a020f0;">import</span> B from <span style="color: #8b2252;">'../B'</span>
+
+<span style="color: #a020f0;">export</span> <span style="color: #a020f0;">default</span> <span style="color: #a020f0;">function</span> A(<span style="color: #a0522d;">props</span>){
+    <span style="color: #a020f0;">const</span> { chocoTable } = props
+    <span style="color: #a020f0;">return</span> &lt;B chocoTable={chocoTable} /&gt;
+}
+</pre>
+</div>
+
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 10: </span>B</label><pre class="src src-js"><span style="color: #a020f0;">import</span> C from <span style="color: #8b2252;">'../C'</span>
+
+<span style="color: #a020f0;">export</span> <span style="color: #a020f0;">default</span> <span style="color: #a020f0;">function</span> B(<span style="color: #a0522d;">props</span>){
+    <span style="color: #a020f0;">const</span> { chocoTable } = props
+    <span style="color: #a020f0;">return</span> &lt;C chocoTable={chocoTable} /&gt;
+}
+</pre>
+</div>
+
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 11: </span>C</label><pre class="src src-js"><span style="color: #a020f0;">export</span> <span style="color: #a020f0;">default</span> <span style="color: #a020f0;">function</span> C(<span style="color: #a0522d;">props</span>){
+    <span style="color: #a020f0;">const</span> { chocoTable } = props
+    <span style="color: #a020f0;">return</span> &lt;&gt;
+        {chocoTable.map( item =&gt; &lt;p key={item.nom}&gt;{item.nom}&lt;/p&gt;)}
+    &lt;/&gt;
+}
+</pre>
+</div>
+
+<p>
+Beuh! Tous nos composants parlent de chocoTable maintenant,
+dégeu! On en a besoin que dans App et dans C! On aimerait
+bien nettoyer ça.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org62a9915" class="outline-2">
+<h2 id="org62a9915"><span class="section-number-2">4.</span> Cap'tain Context to the Rescue</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+On va commencer par créer un ChocolatContext
+</p>
+
+<pre class="example" id="org422d240">
+├── App.js
+├── ChocoContext
+│   └── index.js
+├── components
+│   ├── A
+│   │   └── index.jsx
+│   ├── B
+│   │   └── index.jsx
+│   └── C
+│       └── index.jsx
+</pre>
+
+<p>
+Avec le contenu suivant:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-js"><span style="color: #a020f0;">import</span> { createContext } from <span style="color: #8b2252;">'react'</span>
+
+<span style="color: #a020f0;">const</span> <span style="color: #a0522d;">chocoInit</span> = [
+    {nom: <span style="color: #8b2252;">'banane'</span>,     compatibilit&#233;Chocolat: <span style="color: #8b2252;">'excellente'</span> },
+    {nom: <span style="color: #8b2252;">'gingembre'</span>,  compatibilit&#233;Chocolat: <span style="color: #8b2252;">'excellente'</span> },
+    {nom: <span style="color: #8b2252;">'choux vert'</span>, compatibilit&#233;Chocolat: <span style="color: #8b2252;">'bof'</span> },
+    {nom: <span style="color: #8b2252;">'Gribouille'</span>, compatibilit&#233;Chocolat:  <span style="color: #008b8b;">null</span> }
+]
+
+<span style="color: #a020f0;">export</span> <span style="color: #a020f0;">default</span> createContext(chocoInit)
+</pre>
+</div>
+
+<p>
+On va éliminer toutes les props et n'utiliser que le context
+dans un premier temps, le plus simplement possible.
+</p>
+
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 12: </span>App</label><pre class="src src-js"><span style="color: #a020f0;">import</span> <span style="color: #8b2252;">'./App.css'</span>
+
+<span style="color: #a020f0;">import</span> A from <span style="color: #8b2252;">'./components/A'</span>
+
+<span style="color: #a020f0;">function</span> <span style="color: #0000ff;">App</span>() {
+  <span style="color: #a020f0;">return</span> (
+      &lt;A /&gt;
+  )
+}
+
+<span style="color: #a020f0;">export</span> <span style="color: #a020f0;">default</span> App
+</pre>
+</div>
+
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 13: </span>A</label><pre class="src src-js"><span style="color: #a020f0;">import</span> B from <span style="color: #8b2252;">'../B'</span>
+
+<span style="color: #a020f0;">function</span> <span style="color: #0000ff;">A</span>(){
+    <span style="color: #a020f0;">return</span> &lt;B /&gt;
+}
+
+<span style="color: #a020f0;">export</span> <span style="color: #a020f0;">default</span> A
+</pre>
+</div>
+
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 14: </span>B</label><pre class="src src-js"><span style="color: #a020f0;">import</span> C from <span style="color: #8b2252;">'../C'</span>
+
+<span style="color: #a020f0;">export</span> <span style="color: #a020f0;">default</span> <span style="color: #a020f0;">function</span> B(<span style="color: #a0522d;">props</span>){
+    <span style="color: #a020f0;">return</span> &lt;C  /&gt;
+}
+</pre>
+</div>
+
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 15: </span>C</label><pre class="src src-js"><span style="color: #a020f0;">import</span> ChocoContext from <span style="color: #8b2252;">"../../ChocoContext"</span>
+
+<span style="color: #a020f0;">function</span> <span style="color: #0000ff;">C</span>(<span style="color: #a0522d;">props</span>){
+    console.log(props)
+    <span style="color: #a020f0;">const</span> { chocoTable } = props
+    <span style="color: #a020f0;">return</span> &lt;&gt;
+        {chocoTable.map( item =&gt; &lt;p key={item.nom}&gt;{item.nom}&lt;/p&gt;)}
+    &lt;/&gt;
+}
+
+<span style="color: #a020f0;">function</span> <span style="color: #0000ff;">WrappedC</span>(){
+    <span style="color: #a020f0;">return</span> (
+        &lt;ChocoContext.Consumer&gt;
+            {props =&gt; &lt;C chocoTable={props}/&gt;}
+        &lt;/ChocoContext.Consumer&gt;
+    )
+}
+
+<span style="color: #a020f0;">export</span> <span style="color: #a020f0;">default</span> WrappedC
+</pre>
+</div>
+
+<p>
+Ca fonctionne (si, si) mais c'est tout étrange ce
+truc&#x2026;Voyons.
+</p>
+
+<p>
+On a retrouvé notre <code>C</code> comme avant. Nous n'y touchons
+pas. Mais nous ne l'exportons plus. Au lieu de <code>C</code>, nous
+exportons une version enrobée d'un consommateur du context
+<code>ChocoContext</code> qui s'appelle, surprise,
+<code>ChocoContext.Consumer</code>.
+</p>
+
+<p>
+A l'intérieur de ce <code>Consumer</code>, on a une fonction qui a un
+paramètre, le contenu du contexte, et qui retourne notre
+composant avec ses <code>props</code> qui ne viennent plus de son
+parent mais du contexte lui-même.
+</p>
+
+<p>
+Pour celles qui n'aiment pas <code>props</code> (je ne regarde
+personne) mais qui veulent faire du code propre, on peut
+écrire:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-js"><span style="color: #a020f0;">import</span> ChocoContext from <span style="color: #8b2252;">"../../ChocoContext"</span>
+
+<span style="color: #a020f0;">function</span> <span style="color: #0000ff;">C</span>(<span style="color: #a0522d;">props</span>){
+    console.log(props)
+    <span style="color: #a020f0;">const</span> { chocoTable } = props
+    <span style="color: #a020f0;">return</span> &lt;&gt;
+        {chocoTable.map( item =&gt; &lt;p key={item.nom}&gt;{item.nom}&lt;/p&gt;)}
+    &lt;/&gt;
+}
+
+<span style="color: #a020f0;">function</span> <span style="color: #0000ff;">WrappedC</span>(){
+    <span style="color: #a020f0;">return</span> (
+        &lt;ChocoContext.Consumer&gt;
+            {chocoTable =&gt; &lt;C chocoTable={chocoTable}/&gt;}
+        &lt;/ChocoContext.Consumer&gt;
+    )
+}
+
+<span style="color: #a020f0;">export</span> <span style="color: #a020f0;">default</span> WrappedC
+</pre>
+</div>
+
+<p>
+Ca marche avec un <code>Context</code> tout simple mais ça ne durera
+pas&#x2026;On va voir ça rapidement.
+</p>
+
+<p>
+Vous verrez dans la doc que dans <code>App</code> on peut mettre un
+<code>ChocoContext.Provider</code> qui fait écho au <code>Consumer</code> et qui
+envoie le contexte vers le bas. Ca n'est utile, dans les cas
+simples, que si on veut changer la valeur par défaut du
+contexte. On peut imaginer un composant qui reçoit les
+defauts et un autre, dans un <code>&lt;ChocoContext.Provider
+value={...}&gt;&lt;/ChocoContext.Provider&gt;</code>, qui reçoit les valeurs
+spécifiques dénotées par paresse par &#x2026; 
+</p>
+
+<p>
+Bon, c'est pas tout ça mais si on veut lire <b>et</b> modifier le
+contexte?
+</p>
+
+<p>
+Et bien, c'est moins élégant. Rappelez vous que React
+encourage un style "fonctionnel". Par exemple on ne modifie
+pas directement le <code>state</code>, on utilise <code>setState</code> avec un
+<i>nouveau</i> <code>state</code>, une nouvelle valeur (qui peut être un
+fragment du <code>state</code> si on ne modifie qu'une partie). Si on
+modifie directement le <code>state</code>, React ne va pas correctement
+rappeler <code>render</code> en cas de changement.
+</p>
+
+<p>
+Du coup, pour nous, celà signifie qu'on va devoir utiliser
+<code>useState</code>, quelque chose comme
+<code>const [maValeur, setMaValeur]= useState(valeurInitiale)</code>.
+</p>
+
+<p>
+Ensuite il va falloir passer <code>setMaValeur</code> dans l'attribut
+<code>value</code> du provider. Ou une fonction qui appelle
+<code>setMaValeur</code>, ce que nous allons faire pour rester simple.
+</p>
+
+<p>
+Nous allons aussi devoir modifier notre contexte pour y
+faire une place à notre fonction de modification.
+</p>
+
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 16: </span>ChocoContext</label><pre class="src src-js"><span style="color: #a020f0;">import</span> { createContext } from <span style="color: #8b2252;">'react'</span>
+
+<span style="color: #b22222;">// </span><span style="color: #b22222;">La valeur initiale, s&#233;par&#233; pour clarifier</span>
+<span style="color: #a020f0;">const</span> <span style="color: #a0522d;">chocoTableInit</span> = [
+    {nom: <span style="color: #8b2252;">'banane'</span>,     compatibilit&#233;Chocolat: <span style="color: #8b2252;">'excellente'</span> },
+    {nom: <span style="color: #8b2252;">'gingembre'</span>,  compatibilit&#233;Chocolat: <span style="color: #8b2252;">'excellente'</span> },
+    {nom: <span style="color: #8b2252;">'choux vert'</span>, compatibilit&#233;Chocolat: <span style="color: #8b2252;">'bof'</span> },
+    {nom: <span style="color: #8b2252;">'Gribouille'</span>, compatibilit&#233;Chocolat:  <span style="color: #008b8b;">null</span> }
+]
+
+<span style="color: #b22222;">// </span><span style="color: #b22222;">chocoTable est vide, maintenant, il sera initialis&#233; avec</span>
+<span style="color: #b22222;">// </span><span style="color: #b22222;">chocoTableInit dans le state d'App On a s&#233;par&#233; l'argument</span>
+<span style="color: #b22222;">// </span><span style="color: #b22222;">de createContext pour n'y passer que le nom, pour</span>
+<span style="color: #b22222;">// </span><span style="color: #b22222;">clarifi&#233; aussi</span>
+<span style="color: #a020f0;">const</span> <span style="color: #a0522d;">chocoInit</span> = {
+    chocoTable: [],
+    chocoShake: () =&gt; {}
+}
+
+<span style="color: #a020f0;">const</span> <span style="color: #a0522d;">ChocoContext</span> = createContext(chocoInit)
+
+<span style="color: #b22222;">// </span><span style="color: #b22222;">on exporte donc &#224; la fois le context vide mais avec les</span>
+<span style="color: #b22222;">// </span><span style="color: #b22222;">bonnes structures et les valeurs initiales</span>
+<span style="color: #a020f0;">export</span> { ChocoContext, chocoTableInit }
+App
+<span style="color: #a020f0;">import</span> <span style="color: #8b2252;">'./App.css'</span>
+
+<span style="color: #a020f0;">import</span> { useState } from <span style="color: #8b2252;">'react'</span>
+
+<span style="color: #a020f0;">import</span> A from <span style="color: #8b2252;">'./components/A'</span>
+
+<span style="color: #a020f0;">import</span> { ChocoContext, chocoTableInit } from <span style="color: #8b2252;">'./ChocoContext'</span>
+
+<span style="color: #a020f0;">function</span> <span style="color: #0000ff;">App</span>() {
+  <span style="color: #b22222;">// </span><span style="color: #b22222;">Alors... La valeur initiale du state chocoTable est</span>
+  <span style="color: #b22222;">// </span><span style="color: #b22222;">initialis&#233;e avec la valeur de chocoTableInit qui est</span>
+  <span style="color: #b22222;">// </span><span style="color: #b22222;">import&#233;e du module ChocoContexte</span>
+  <span style="color: #b22222;">// </span><span style="color: #b22222;">Gratuit: useState nous donne une proc&#233;dure pour</span>
+  <span style="color: #b22222;">// </span><span style="color: #b22222;">modifier ce state, nous l'appelons...setChocoTable.</span>
+  <span style="color: #a020f0;">const</span> [ <span style="color: #a0522d;">chocoTable</span>, <span style="color: #a0522d;">setChocoTable</span> ] = useState(chocoTableInit)
+  <span style="color: #b22222;">// </span><span style="color: #b22222;">Pour ne pas avoir &#224; charger le composant A, nous</span>
+  <span style="color: #b22222;">// </span><span style="color: #b22222;">inventons une fonction qui utilise setChocoTable sans</span>
+  <span style="color: #b22222;">// </span><span style="color: #b22222;">param&#232;tres. C'est cette fonction que nous passons dans</span>
+  <span style="color: #b22222;">// </span><span style="color: #b22222;">l'attribut value du Provider, avec chocoTable qui fait</span>
+  <span style="color: #b22222;">// </span><span style="color: #b22222;">partie du state d'App Vous noterez les doubles</span>
+  <span style="color: #b22222;">// </span><span style="color: #b22222;">moustaches: on passe un objet &#224; value et en JSX on</span>
+  <span style="color: #b22222;">// </span><span style="color: #b22222;">enferme les expressions javascript dans des {}. Double</span>
+  <span style="color: #b22222;">// </span><span style="color: #b22222;">dose.</span>
+  <span style="color: #a020f0;">const</span> <span style="color: #a0522d;">chocoShake</span> = () =&gt; setChocoTable([...chocoTable].reverse())
+  <span style="color: #a020f0;">return</span> (
+    &lt;ChocoContext.Provider value={{chocoTable, chocoShake}}&gt;
+      &lt;A /&gt;
+    &lt;/ChocoContext.Provider&gt;
+  )
+}
+
+<span style="color: #a020f0;">export</span> <span style="color: #a020f0;">default</span> App
+</pre>
+</div>
+
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 17: </span>A</label><pre class="src src-js"><span style="color: #a020f0;">import</span> B from <span style="color: #8b2252;">'../B'</span>
+
+<span style="color: #a020f0;">import</span> { ChocoContext } from <span style="color: #8b2252;">'../../ChocoContext'</span>
+
+<span style="color: #a020f0;">function</span> <span style="color: #0000ff;">A</span>(<span style="color: #a0522d;">props</span>){
+    <span style="color: #b22222;">// </span><span style="color: #b22222;">on est bien content d'avoir utilis&#233; le nom props</span>
+    <span style="color: #b22222;">// </span><span style="color: #b22222;">comme tous les autres composants React plut&#244;t qu'un</span>
+    <span style="color: #b22222;">// </span><span style="color: #b22222;">truc invent&#233;...Ouf. Ici, on s'est simplifi&#233; la tache,</span>
+    <span style="color: #b22222;">// </span><span style="color: #b22222;">on a qu'&#224; passer le nom de la proc&#233;dure chocoShake &#224;</span>
+    <span style="color: #b22222;">// </span><span style="color: #b22222;">onClick est c'est bon.</span>
+    <span style="color: #a020f0;">const</span> { chocoShake } = props
+    <span style="color: #a020f0;">return</span> &lt;&gt;
+        &lt;button onClick={chocoShake}&gt;Reverse The Choco!&lt;/button&gt;
+        &lt;B /&gt;
+    &lt;/&gt;
+}
+
+<span style="color: #a020f0;">function</span> <span style="color: #0000ff;">WrappedA</span>(){
+    <span style="color: #a020f0;">return</span> (
+        &lt;ChocoContext.Consumer&gt;
+            {props =&gt; &lt;A {...props} /&gt;}
+        &lt;/ChocoContext.Consumer&gt;
+    )
+}
+
+
+<span style="color: #a020f0;">export</span> <span style="color: #a020f0;">default</span> WrappedA
+</pre>
+</div>
+
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 18: </span>B</label><pre class="src src-js"><span style="color: #a020f0;">import</span> C from <span style="color: #8b2252;">'../C'</span>
+
+<span style="color: #a020f0;">export</span> <span style="color: #a020f0;">default</span> <span style="color: #a020f0;">function</span> B(<span style="color: #a0522d;">props</span>){
+    <span style="color: #a020f0;">return</span> &lt;C  /&gt;
+}
+</pre>
+</div>
+
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 19: </span>C</label><pre class="src src-js"><span style="color: #a020f0;">import</span> { ChocoContext } from <span style="color: #8b2252;">"../../ChocoContext"</span>
+
+<span style="color: #a020f0;">function</span> <span style="color: #0000ff;">C</span>(<span style="color: #a0522d;">props</span>){
+    <span style="color: #a020f0;">return</span> &lt;&gt;
+        {props.chocoTable.map( item =&gt; &lt;p key={item.nom}&gt;{item.nom}&lt;/p&gt;)}
+    &lt;/&gt;
+}
+
+<span style="color: #a020f0;">function</span> <span style="color: #0000ff;">WrappedC</span>(){
+    <span style="color: #a020f0;">return</span> (
+        &lt;ChocoContext.Consumer&gt;
+            {props =&gt; &lt;C {...props} /&gt;}
+        &lt;/ChocoContext.Consumer&gt;
+    )
+}
+
+<span style="color: #a020f0;">export</span> <span style="color: #a020f0;">default</span> WrappedC
+</pre>
+</div>
+
+<p>
+Et voilà, A peut modifier le contexte et <code>C</code> peut le
+consommer sans qu'on s'amuse à passer des props de
+partout. Voilà aussi une excellente manière de ternir le
+glorieux λ (la programmation fonctionnelle).
+</p>
+
+<p>
+Promis, Redux est moins beurk. Bien fait, c'est même un peu
+élégant.
+</p>
+
+<p>
+Please: envoyez vos remarques, questions, commentaires,
+critiques&#x2026;N'hésitez surtout pas, surtout si c'est négatif:
+plus vous me communiquez vos retours et meilleurs seront les
+supports.
+</p>
+
+<p>
+Aussi, j'ai menti au début: <code>$_</code> c'est le dernier argument
+de la commande précédente dans certains contextes seulement.
+</p>
+
+<p>
+La sémantique de <code>$_</code> est, pour GNU Bash en tout cas:
+</p>
+
+<blockquote>
+<p>
+($_, an underscore.) At shell startup, set to the pathname
+used to invoke the shell or shell script being executed as
+passed in the environment or argument list. Subsequently,
+expands to the last argument to the previous simple command
+executed in the foreground, after expansion. Also set to the
+full pathname used to invoke each command executed and
+placed in the environment exported to that command. When
+checking mail, this parameter holds the name of the mail
+file. &#x2014; <a href="https://www.gnu.org/software/bash/manual/bash.html">GNU Bash</a>
+</p>
+</blockquote>
+
+<p>
+Une dernière chose avant de vous laissez, aller lire la doc
+de React concernant le context, particulière la section
+intitulée <a href="https://reactjs.org/docs/context.html#before-you-use-context">Before You Use Context</a>. La simple taille de cette
+section devrait nous faire réfléchir&#x2026;
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: gregory</p>
+<p class="date">Created: 2023-03-23 jeu. 18:00</p>
+<p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

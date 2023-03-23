@@ -1,0 +1,1023 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2023-03-23 jeu. 17:08 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Utiliser Git et GitHub</title>
+<meta name="author" content="Gregory Houldsworth" />
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+</head>
+<body>
+<div id="content" class="content">
+<h1 class="title">Utiliser Git et GitHub</h1>
+<div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org816915c">1. Pourquoi git? (ou Mercurial, Subversion, &#x2026;)</a></li>
+<li><a href="#orgf3a033c">2. La boucle</a></li>
+<li><a href="#org277d9dc">3. Git en action</a></li>
+<li><a href="#orga584135">4. Création d'un repo local+GitHub</a>
+<ul>
+<li><a href="#org795b353">4.1. La méthode experte</a></li>
+</ul>
+</li>
+<li><a href="#orgdedf039">5. Ressources</a></li>
+<li><a href="#org9dd50a0">6. En cas de souci</a>
+<ul>
+<li><a href="#orgceac2ab">6.1. J'ai fait commit sans -m</a></li>
+</ul>
+</li>
+<li><a href="#org68963c4">7. Branches Git</a></li>
+<li><a href="#org82fe223">8. Pratique</a>
+<ul>
+<li><a href="#org315881f">8.1. Mise en place</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org816915c" class="outline-2">
+<h2 id="org816915c"><span class="section-number-2">1.</span> Pourquoi git? (ou Mercurial, Subversion, &#x2026;)</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+un DVCS <sup><a id="fnr.1" class="footref" href="#fn.1" role="doc-backlink">1</a></sup> un outil
+de gestion de version distributé. Sans cet outil et en
+supposant une équipe d'une personne, on pourrait en
+approximer l'effet en créant un fichier par version. On se
+retrouverait vite avec, par exemple:
+</p>
+
+<pre class="example" id="org7eddba4">
+index_version_1.html
+index_version_2.html
+index_version_3.html
+</pre>
+
+<p>
+Pas top et nous n'avons pas qu'un fichier, si on ajoute
+simplement une feuille de style:
+</p>
+
+<pre class="example" id="org841ed0e">
+index_version_1.html
+index_version_2.html
+index_version_3.html
+style_version_1.css
+style_version_2.css
+style_version_3.css
+</pre>
+
+<p>
+A ce moment, des questions se posent. Lorsque l'on modifie
+le fichier index, on le sauvegarde sous un nouveau nom. Le
+fichier css change-t-il aussi de version? Ou doit-on se
+souvenir des correspondance entre les versions html et les
+versions css? Et ce n'est que le début des soucis.
+</p>
+
+<p>
+Heureusement, depuis SCCS (1972), les programmeurs ont des
+outils de contrôle de version (VCS). Celui que nous verrons
+est Git, qui fait partie d'une vague plus récente de VCS
+distributés, comme Mercurial. On les dit <i>distribués</i> car la
+totalité du code et des informations de versionnage sont
+localement disponibles sur chaque machine utilisée dans le
+dévelopement du projet.
+</p>
+
+<p>
+Un modèle totalement décentralisé apporte beaucoup
+d'avantage mais quelques inconvénients:
+</p>
+
+<ul class="org-ul">
+<li>difficile d'identifier une source canonique pour les
+utilisateurs du code et les personnes qui le transforme en
+logiciel pour les gestionnaires de packets (apt sous
+Debian, Chocolatey sous Windows, homebrew sous MacOs).</li>
+<li>les machines des dévelopeurs n'ont pas toujours accès au
+réseau, n'ont pas d'URI et changent d'IP régulièrement. Il
+faut beaucoup communiquer pour obtenir les changements de
+chacun.</li>
+</ul>
+
+<p>
+En pratique, une des machines va avoir un statut particulier
+et être lié à une URL fixe, par exemple sur GitHub, qui
+apporte en plus un gestionnaire de ticket, un wiki, une
+interface accessible et agréable.
+</p>
+
+<p>
+Il existe des alternatives: GitLab, par exemple, et Gitea
+que l'on peut très facilement héberger soi-même.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgf3a033c" class="outline-2">
+<h2 id="orgf3a033c"><span class="section-number-2">2.</span> La boucle</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+Un VCS permet de gérer les changements apportés à un
+ensemble de fichiers (un project, un programme, un
+répertoire). Dans sa plus simple expression, les étapes d'un
+projet sous VCS sont:
+</p>
+
+<ol class="org-ol">
+<li>On créé un répertoire où mettre notre code</li>
+<li>On y initialise un repo ce qui commande tranforme le
+dossier courant en repo git. Cette initialisation est
+implicite lorsque l'on clone un repo.</li>
+<li>On créé/modifie un ou plusieurs fichiers (avec VS Code,
+Notepad++, redirection bash).</li>
+<li>On indique à Git les fichiers que l'on souhaite ajouter à
+la zone d'index (staging area)</li>
+<li>On fait un commit pour créer une nouvelle version du code
+(snapshot, révision). Par défault, git ne prend en compte
+que les fichiers dans sa zone d'index pour les
+commits. On peut ainsi choisir d'ignorer certaines
+modifications.</li>
+<li>On retourne à l'étape 3</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-org277d9dc" class="outline-2">
+<h2 id="org277d9dc"><span class="section-number-2">3.</span> Git en action</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+Voici une interaction dans le terminal qui illustre les
+étapes d'un git complètement local (donc pas sur GitHub).
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">$ mkdir foo
+$ cd foo
+$ git init
+Initialized empty Git repository<span style="color: #a020f0;"> in</span> /.../konexio/.git/
+$ echo <span style="color: #8b2252;">"I like honey"</span> &gt; winnie.txt
+$ ls
+winnie.txt
+$ git status
+On branch master
+
+No commits yet
+
+Untracked files:
+    (use <span style="color: #8b2252;">"git add ..."</span> to include<span style="color: #a020f0;"> in</span> what will be committed)
+    winnie.txt
+
+nothing added to commit but untracked files present
+(use <span style="color: #8b2252;">"git add"</span> to track)
+$ git add winnie.txt 
+$ git status
+On branch master
+
+No commits yet
+
+Changes to be committed:
+    (use <span style="color: #8b2252;">"git rm --cached ..."</span> to unstage)
+    new file:   winnie.txt
+
+$ git commit -m <span style="color: #8b2252;">"created a file"</span>
+[master (root-commit) 2df84fe] created a file
+    1 file changed, 1 insertion(+)
+    create mode 100644 winnie.txt
+$ git status
+On branch master
+nothing to commit, working tree clean
+</pre>
+</div>
+
+<p>
+Les étapes une par une
+</p>
+
+<ol class="org-ol">
+<li><code>git init</code>: On initialise le repo, on transforme le
+répertoire courant en repo</li>
+<li><code>echo "I like honey" &gt; winnie.txt</code> On dit a bash d'écrire
+le texte "I like honey" dans le fichier "winnie.txt"</li>
+<li><code>git status</code>: On demande à git l'état du repo. Il nous
+indique la branche active, les fichiers nouveaux,
+modifiés, effacés et s'ils sont tracked (dans le staging
+area) ou non.</li>
+<li><code>git commit -m "created a file"</code>: On fait un commit, nous
+avons une première version de notre code.</li>
+</ol>
+
+<p>
+Remarquez que la dernière invocation de git status est
+laconique: rien n'a changé depuis le dernier commit, le
+contenu du répertoire correspond à la dernière version local
+du code.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orga584135" class="outline-2">
+<h2 id="orga584135"><span class="section-number-2">4.</span> Création d'un repo local+GitHub</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+Malheureusement, notre git est local, personne ne peut
+admirer notre travail. Inacceptable!
+</p>
+
+<p>
+Pour commencer on va sur GitHub pour créer un nouveau
+repo. Sur la page d'accueil, on a le bouton ou, pour éviter
+un click fatiguant, on va directement sur
+<a href="https://github.com/new">https://github.com/new</a>.
+</p>
+
+
+<div id="orgeb4cde2" class="figure">
+<p><img src="../../assets/github-new-repo-00.png" alt="github-new-repo-00.png" />
+</p>
+</div>
+
+<p>
+On arrive sur la page de création de repo:
+</p>
+
+
+<div id="orgbf0f891" class="figure">
+<p><img src="../../assets/github-new-repo-01.png" alt="github-new-repo-01.png" />
+</p>
+</div>
+
+<p>
+On donne un nom à notre repo, j'ai choisi "bubble-tea" parce
+que c'est une boisson mignonne et sympa.
+</p>
+
+
+<div id="org0471460" class="figure">
+<p><img src="../../assets/github-new-repo-02.png" alt="github-new-repo-02.png" />
+</p>
+</div>
+
+<p>
+On click sur <code>Create Repository</code>
+</p>
+
+
+<div id="orgb8805f2" class="figure">
+<p><img src="../../assets/github-new-repo-03.png" alt="github-new-repo-03.png" />
+</p>
+</div>
+
+<p>
+GitHub nous montre une nouvelle page avec des informations
+utiles sur les prochaines étapes.
+</p>
+
+
+<div id="org69bfd92" class="figure">
+<p><img src="../../assets/github-new-repo-04.png" alt="github-new-repo-04.png" />
+</p>
+</div>
+
+<p>
+Git nous propose 4 stratégies suivant notre situation
+</p>
+
+<ol class="org-ol">
+<li>La méthode experte, GitHub nous donne le strict
+nécessaire. En copiant l'adresse et avec git clone, c'est
+pratique si on a pas encore de répertoire chez nous.</li>
+<li>Si on a pas encore de fichier chez nous, on peut utiliser
+la seconde option. Les deux différences principales avec
+la première méthode et qu'ici GitHub nous prend par la
+main et qu'on a la possibilité de changer facilement le
+nom de la branche principale. Dans le screenshot on
+l'appelle "main", on peut aussi l'appeler "sakura",
+"je-suis-un-yaourt", etc. Avec la méthode #1 on a une
+branche par défaut qui s'appelle "master", équivalente à
+la branche "default" sous Mercurial.</li>
+<li>Si on a déjà un répertoire local avec des fichiers sous
+contrôle de version, on suit ces instructions. Attention,
+il faut avoir déjà fait un git init et un premier commit.</li>
+<li>La dernière option ne nous concerne pas vraiment, il
+s'agit d'importer des projets depuis d'autres systèmes de
+contrôle de version comme Mercurial.</li>
+</ol>
+
+<p>
+Il existe une autre situation: un repo existe déjà,
+quelqu'un d'autre la créée et vous aimeriez voir le code et
+peut-être contribué à son amélioration. Elle est très
+similiare à la première stratégie.
+</p>
+</div>
+
+<div id="outline-container-org795b353" class="outline-3">
+<h3 id="org795b353"><span class="section-number-3">4.1.</span> La méthode experte</h3>
+<div class="outline-text-3" id="text-4-1">
+<p>
+Avec l'adresse que nous donne GitHub, que l'on copie, on va
+sur son Terminal (iTerm | Cmder&#x2026;) et on clone. Voilà
+l'interaction dans mon terminal, j'ai ajouté des
+commentaires précédés de #.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #b22222;"># </span><span style="color: #b22222;">On clone le repo</span>
+~/Documents/dev$ git clone git@github.com:grenle/bubble-tea.git
+
+<span style="color: #b22222;"># </span><span style="color: #b22222;">git nous dit qu'il le clone dans le r&#233;pertoire bubble-tea</span>
+<span style="color: #b22222;"># </span><span style="color: #b22222;">on peut sp&#233;cifier ce repertoire avec la m&#234;me commande clone:</span>
+<span style="color: #b22222;"># </span><span style="color: #b22222;">git clone &lt;adresse-du-repo-github&gt; &lt;repertoire-local&gt;</span>
+<span style="color: #b22222;"># </span><span style="color: #b22222;">par exemple:</span>
+<span style="color: #b22222;"># </span><span style="color: #b22222;">git clone git@github.com:grenle/bubble-tea.git ./masala-chai</span>
+Cloning into <span style="color: #8b2252;">'bubble-tea'</span>...
+warning: You appear to have cloned an empty repository.
+
+<span style="color: #b22222;"># </span><span style="color: #b22222;">On va dans le repertoire ou habite notre clone</span>
+~/Documents/dev$ cd bubble-tea/
+
+<span style="color: #b22222;"># </span><span style="color: #b22222;">Notre repo est vide et triste. Ouvrons le dossier dans</span>
+<span style="color: #b22222;"># </span><span style="color: #b22222;">VS Code</span>
+~/Documents/dev/bubble-tea$ code .
+
+<span style="color: #b22222;"># </span><span style="color: #b22222;">Avec VS Code, j'ai cr&#233;&#233; (control+n) un nouveau fichier</span>
+<span style="color: #b22222;"># </span><span style="color: #b22222;">j'y ai &#233;crit du texte et j'ai sauvegard&#233; le fichier</span>
+<span style="color: #b22222;"># </span><span style="color: #b22222;">(control+s) sous le nom README.md</span>
+~/Documents/dev/bubble-tea$ ls
+README.md
+
+<span style="color: #b22222;"># </span><span style="color: #b22222;">On ajoute le nouveau fichier &#224; la zone d'index de git</span>
+~/Documents/dev/bubble-tea$ git add README.md 
+
+<span style="color: #b22222;"># </span><span style="color: #b22222;">Et on fait un commit</span>
+~/Documents/dev/bubble-tea$ git commit -m <span style="color: #8b2252;">"added a readme"</span>
+
+<span style="color: #b22222;"># </span><span style="color: #b22222;">Git nous montre qu'il travaille dur</span>
+[master (root-commit) d667d45] added a readme
+    1 file changed, 2 insertions(+)
+    create mode 100644 README.md
+
+<span style="color: #b22222;"># </span><span style="color: #b22222;">Encore un effort, git, maintenant on veut push'&#233; notre</span>
+<span style="color: #b22222;"># </span><span style="color: #b22222;">code sur GitHub</span>
+~/Documents/dev/bubble-tea$ git push origin master
+
+<span style="color: #b22222;"># </span><span style="color: #b22222;">Et voil&#224;, git est content et nous aussi:</span>
+Enumerating objects: 3, done.
+Counting objects: 100% (3/3), done.
+Delta compression using up to 12 threads
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (3/3), 272 bytes | 272.00 KiB/s, done.
+Total 3 (delta 0), reused 0 (delta 0)
+To github.com:grenle/bubble-tea.git
+    * [new branch]      master -&gt; master
+</pre>
+</div>
+
+<p>
+Par convention, dans un repo et plus généralement dans un
+projet, on met un README avec des informations pertinentes
+comme une présentation rapide, des instructions
+d'installation et d'usage, une liste des plateformes
+compatibles, etc. GitHub, suivant cette convention, affiche
+le contenu de ce fichier sur la page d'accueil du repo. Par
+convention également, quoique moins universelle, le readme
+est un .md, qui dénote un fichier text markdown. Il s'agit
+de texte "amélioré", par exemple un ligne qui commence par
+un # est un titre (h1 en html). L'interwebs est plein de
+documentation sur ce format mais celle de <a href="https://guides.github.com/pdfs/markdown-cheatsheet-online.pdf">GitHub</a> est
+intéressante parce qu'elle présente markdown ainsi que les
+extensions que GitHub comprend et qui sont bien utiles sur
+les repo.
+</p>
+
+<p>
+Pour les autres stratégies, il suffit de recopier les lignes
+que vous donne GitHub. Attention (bis), pour la méthode
+intitulée "&#x2026;or push an existing repository from the
+command line", il faut que le projet local soit déjà sous
+contrôle de version avant de tapper les commandes sur
+GitHub, donc <code>git init</code>, <code>git add &lt;nom-de-fichier&gt;</code> et <code>git
+commit -m &lt;mon message&gt;</code>
+</p>
+
+<p>
+Vous allez peut-être accumuler plein de repos sans intérêt
+en apprenant git. Nettoyer tout ça est trivial: on efface le
+repertoire local et on va sur la page github du repo, dans
+les "settings" (deuxième barre de menu), tout en bas de la
+page, il y a le bouton pour effacer le repo.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgdedf039" class="outline-2">
+<h2 id="orgdedf039"><span class="section-number-2">5.</span> Ressources</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+Voici quelques liens utiles pour réviser les bases et aller
+plus loin:
+</p>
+
+<ul class="org-ul">
+<li>La <a href="https://docs.github.com/en">documentation</a> de GitHub.</li>
+<li>Le <a href="https://guides.github.com/introduction/git-handbook/">guide</a> git, qui fait partie des guides publiés par github.</li>
+<li><a href="https://git-scm.com/book/en/v2">Pro Git</a>, a peu près tout sur git, très complet.</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org9dd50a0" class="outline-2">
+<h2 id="org9dd50a0"><span class="section-number-2">6.</span> En cas de souci</h2>
+<div class="outline-text-2" id="text-6">
+</div>
+<div id="outline-container-orgceac2ab" class="outline-3">
+<h3 id="orgceac2ab"><span class="section-number-3">6.1.</span> J'ai fait commit sans -m</h3>
+<div class="outline-text-3" id="text-6-1">
+<p>
+Si VS Code s'ouvre, écrivez votre message de commit sur la
+première ligne et sauvegardez ce fichier. Vous pouvez le
+fermer et revenir sur votre terminal.
+</p>
+
+<p>
+Si un autre éditeur apparait celui que vous avez paramétré,
+comme VS Code, écrivez votre message de commit (sans '#' au
+début), sauvegardez et quitté l'éditeur.
+</p>
+
+<p>
+Si vous voyez ça:
+</p>
+
+
+<div id="orgb3d1978" class="figure">
+<p><img src="../../assets/commit-nano.png" alt="commit-nano.png" />
+</p>
+</div>
+
+<p>
+Vous êtes sous Nano, écrivez votre message de commit. Puis
+Control+O pour sauvegarder, entrée (ou enter) pour confirmer
+et finalement Control+x pour quitter Nano.
+</p>
+
+<p>
+Si vous voyez ce truc:
+</p>
+
+
+<div id="org687dc8b" class="figure">
+<p><img src="../../assets/commit-vi.png" alt="commit-vi.png" />
+</p>
+</div>
+
+<p>
+Vous êtes sous Vi(m). La prise en main n'est pas
+intuitive. Faites échap (ou escape) puis tappez ":q!" et
+entrée/enter. Ayant quitté sans message, vous allez devoir
+refaire le commit. Tachez de ne pas oublier le message:
+commit -m "&lt;mon-message&gt;", par exemple:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">git commit -m <span style="color: #8b2252;">"added a css rule for a lovely title"</span>
+</pre>
+</div>
+
+<p>
+<b>Note</b>: Malgré sa prise en main peu intuitive, Vim (et Vi,
+son ancêtre plus limité) est un éditeur très puissant et
+incontournable. C'est un outil classique, comme <code>git</code> ou
+<code>make</code> à connaître. De plus, il est très léger. Combiné avec
+tmux, par exemple, vous pouvez obtenir une excellente
+alternative à Visual Studio Code, IntelliJ qui fonctionnera
+très bien même sur du materiel limité.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org68963c4" class="outline-2">
+<h2 id="org68963c4"><span class="section-number-2">7.</span> Branches Git</h2>
+<div class="outline-text-2" id="text-7">
+<p>
+Une branche permet de créer une chronologie alternative afin
+de travailler sur son code en indépendance d'autres
+changements apportés. Elle permet également d'isoler les
+effets d'une action spécifique (réparation d'un bug, ajout
+d'une fonctionnalité, nettoyage d'un bout de code) afin de
+pouvoir considérer ces seuls changements et de les accepter
+dans la branche parente. Pour être un peu plus concret,
+voilà quelques branches semi-permanentes vaguement-standard
+qu'on peut observer dans la nature:
+</p>
+
+<ul class="org-ul">
+<li>master / release, pour la version publiée</li>
+<li>dev / unstable, pour la version sur laquelle on travaille</li>
+<li>hotfixes, un peu comme un release surprise, on la créé en
+divergeant du master pour régler un problème identifié sur
+la version en production et elle sera réintégrée au master
+et à la branche de dévelopement.</li>
+</ul>
+
+<p>
+Quand on initialise git sur un repo tout neuf et qu'on fait
+un premier commit, il n'y a qu'un branche. Chaque commit
+suivant, chaque version du code, est un évènement dans une
+suite linéaire.
+</p>
+
+<pre class="example" id="org182a66d">
+master-v1 -&gt; master-v2 -&gt; master-v3 -&gt; ...
+</pre>
+
+<p>
+Quand on fait une branche, on obtient une nouvelle
+chronologie basée sur le noeud de départ de la branche. Par
+exemple, avec une branche "add-authors" éphémère destinée à
+ajouter un fichier contenant les auteurs du projet, dérivée
+de master v1:
+</p>
+
+
+<div id="orgb254dbc" class="figure">
+<p><img src="../../assets/git-branch-graph-1.png" alt="git-branch-graph-1.png" />
+</p>
+</div>
+
+<p>
+Pour simuler une branche <code>master</code> et un branche
+<code>add-authors</code> évoluant simultanément:
+</p>
+
+<ol class="org-ol">
+<li>On créé la branche add-author, on la selectionne</li>
+<li>Sur add-author on fait un premier commit</li>
+<li>On revient sur la branche master et on y fait deux
+commits. Ces changements ne sont pas visibles sur
+add-author</li>
+<li>On revient sur la branche add-authors pour y faire un
+commit. Ces changements ne sont pas visibles sur
+master. Par politesse pour master on fusionne les
+modifications faites sur master depuis la création de la
+branche ou depuis la dernière fusion.</li>
+<li>De retour sur master, on peut fusionner les modifications
+faites sur add-authors. Notre projet à une nouvelle
+featurette, c'est cool.</li>
+</ol>
+
+<p>
+Par implémentation et par culture, la créations de branches
+est très encouragée sous git. Le plus souvent, on va créer
+une branche à partir du master ou de la branche de
+dévelopement pour chaque bug qu'on fix ou chaque
+fonctionnalité qu'on ajoute.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org82fe223" class="outline-2">
+<h2 id="org82fe223"><span class="section-number-2">8.</span> Pratique</h2>
+<div class="outline-text-2" id="text-8">
+</div>
+<div id="outline-container-org315881f" class="outline-3">
+<h3 id="org315881f"><span class="section-number-3">8.1.</span> Mise en place</h3>
+<div class="outline-text-3" id="text-8-1">
+<p>
+Avant toute chose, il nous faut un repo. Si c'est encore
+flou, on voit plus haut, c'est expliqué. J'ai créé un repo
+"arboreal-adventures" sur GitHub que j'ai cloné localement,
+j'y ai ajouté un fichier README.md avec le contenu suivant.
+</p>
+
+<pre class="example" id="org90d9684">
+# Arboreal Adventures
+    
+Le logiciel le plus véloce, le plus léger et le plus facile à installer du
+monde: pas de code.
+</pre>
+
+<p>
+Et j'ai fait mon commit et mon push. En allant sur GitHub,
+je vois que la plateforme à compris ce qu'était un
+README.md: un texte de présentation du projet avec des
+instructions markdown de présentation (# pour le titre par
+exemple).
+</p>
+
+
+<div id="org9444e9e" class="figure">
+<p><img src="../../assets/github-lovely-readme.png" alt="github-lovely-readme.png" />
+</p>
+<p><span class="figure-number">Figure 1: </span>Visualisation du README.md sur GitHub</p>
+</div>
+
+<p>
+Hmm&#x2026;il faudrait quand même qu'on sache qui a créé ce
+projet. On met ça dans un fichier AUTHORS.md, mais on fait
+ça sur une branche. On va dans notre terminal, à l'endroit
+de notre repo. Là on a deux choix.
+</p>
+
+<p>
+On peut être litéral et utiliser les commandes branch et
+checkout pour créer et selectionner une branche.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">git branch add-authors
+git checkout add-authors
+</pre>
+</div>
+
+<p>
+Ou on est paresseux comme Gregory et on utilise le racourci
+checkout -b qui fait deux-en un.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">git checkout -b add-authors
+</pre>
+</div>
+
+<p>
+Git est sympa, il nous prévient qu'il a Switched to branch
+'add-authors'. C'est parti, on peut créer un fichier
+AUTHORS.md dans VS Code. Le mien à le contenu suivant:
+</p>
+
+<pre class="example" id="orgc20e2e6">
+# La super team
+
+- [Hiyam](http://www.example.com/hi) - CEO
+- [Shoma](http://www.example.com/shoma) - CTO
+- [Florentine](http://www.example.com/flo) - Un genre de biscuit
+
+## Merci
+
+Plein de gens, je me souviens plus bien.
+Rapidement, les nouveautés markdown: ## pour sous titre (h2 en html), [titre](adresse) pour un lien (&lt;a href="adresse"&gt;titre&lt;/a&gt;) et "-" pour un item de list (&lt;li&gt;, le &lt;ul&gt; est implicite).
+</pre>
+
+<p>
+Avec ce changement, on va faire add, commit et push comme il
+faut.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">git add AUTHORS.md
+git commit -m <span style="color: #8b2252;">"added authors"</span>
+git push origin add-authors
+</pre>
+</div>
+
+<p>
+On peut maintenant aller sur GitHub et naviguer jusqu'au
+repo sur lequel on travaille. Quand on fait un pull request
+(PR), on demande à une branche (ici master) de bien vouloir
+intégrer les changements d'une autre (ici add-authors).
+</p>
+
+<p>
+Si on va sur notre repo, on voit un truc nouveau sur la page:
+</p>
+
+
+<div id="org4e3f39f" class="figure">
+<p><img src="../../assets/github-compare-and-merge.png" alt="github-compare-and-merge.png" />
+</p>
+<p><span class="figure-number">Figure 2: </span>Commencer la comparaison/fusion avec GitHub</p>
+</div>
+
+<p>
+On peut clicker là dessus ou aller directement au lien
+proposé par git, on arrive au même endroit, la page pour
+faire une PR. Sur cette page, GitHub nous dit que master
+peut recevoir sans conflit les modification de add-authors:
+</p>
+
+
+<div id="orgfa059fb" class="figure">
+<p><img src="../../assets/github-automerge-ok.png" alt="github-automerge-ok.png" />
+</p>
+<p><span class="figure-number">Figure 3: </span>Conflits ou absence the conflit pour une fusion the branche</p>
+</div>
+
+
+<p>
+Et on a un bouton pour lancer ce fameux pull-request:
+</p>
+
+
+<div id="orgd2aa930" class="figure">
+<p><img src="../../assets/github-create-merge-request.png" alt="github-create-merge-request.png" />
+</p>
+<p><span class="figure-number">Figure 4: </span>Lancer la fusion</p>
+</div>
+
+<p>
+Hop, on clique et on arrive sur la page de la PR. On peut
+aussi selectionner l'onglet "Pull request" pour voir toutes
+les PR.
+</p>
+
+<p>
+GitHub nous y répète que tout est bon, pas de conflit, on a
+juste à appuyer sur le bouton pour faire le merge/la
+fusion/l'inclusion de changements. Encore deux click. Et un:
+</p>
+
+
+<div id="org0db0a42" class="figure">
+<p><img src="../../assets/github-merge-pull-request.png" alt="github-merge-pull-request.png" />
+</p>
+</div>
+
+<p>
+Et deux, pour être sûr d'être sûr:
+</p>
+
+
+<div id="org7f7f94b" class="figure">
+<p><img src="../../assets/github-merge-pull-request-confirm.png" alt="github-merge-pull-request-confirm.png" />
+</p>
+</div>
+
+<p>
+Git hub nous propose ensuite d'effacer la branche inutile:
+</p>
+
+
+<div id="org64c2c0a" class="figure">
+<p><img src="../../assets/github-merge-pull-request-delete-branch.png" alt="github-merge-pull-request-delete-branch.png" />
+</p>
+</div>
+
+<p>
+Ca c'est GitHub qui le dit, il n'est pas évident qu'elle
+soit si inutile que ça. D'un autre côté, il est bon d'avoir
+une certaine hygienne de branche, sinon on ne s'y retrouve
+plus. On va l'enlever mais on est des grands, on fait ça
+dans le terminal, nous.
+</p>
+
+<p>
+Dans notre terminal, on saisi git checkout master pour
+selectionner cette branche. On va voir&#x2026;
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">$ git checkout master
+$ ls
+README.md
+</pre>
+</div>
+
+<p>
+Oh noes! Woe is me! La fripouille, on a pas du tout le
+nouveau fichier! Pas de panique, on a fait le merge sur
+GitHub, notre repo local n'est pas au courant.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">$ git pull
+$ ls
+AUTHORS.md  README.md
+</pre>
+</div>
+
+<p>
+Ouf, tout va bien. On a créé une branche pour y faire une
+action. Sur cette branche, on retrouve le cycle
+add/commit/push. Contents de notre travail, on a fait une
+pull request que l'on a accepté, c'est clairement un travail
+de qualité. Et on a synchronisé notre repo local pour que
+notre branche master soit à jour, avec le nouveau fichier.
+</p>
+
+<p>
+On va juste faire un peu de ménage:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">$ git branch -d add-authors <span style="color: #b22222;"># </span><span style="color: #b22222;">effacer la branche locale</span>
+$ git push origin --delete add-authors <span style="color: #b22222;"># </span><span style="color: #b22222;">effacer la branche GitHub</span>
+</pre>
+</div>
+
+<p>
+Voilà. On a bien mérité du bubble-tea, je trouve. Ou un
+cookie, avec un verre de lait.
+</p>
+</div>
+</div>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">Footnotes: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1" role="doc-backlink">1</a></sup> <div class="footpara" role="doc-footnote"><p class="footpara">Distributed Version Control System</p></div></div>
+
+
+</div>
+</div></div>
+<div id="postamble" class="status">
+<p class="author">Author: Gregory Houldsworth</p>
+<p class="date">Created: 2023-03-23 jeu. 17:08</p>
+<p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

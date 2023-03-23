@@ -1,0 +1,16 @@
+#+TITLE: Homepage for Gregory Houldsworth (grenle)
+#+AUTHOR: Gregory Houldsworth
+
+[[file:assets/grenle-logo.svg]]
+
+Made with Org, file by file, until I get around to using the
+publish function. Works well enough. As you can tell, I'm
+not a UI/UX person.
+
+* Code
+
+* Supports d'apprentissage
+
+Quelques [[./wit/][documents]] pour aider celles et ceux qui souhaitent
+apprendre la programmation web. Elaborées avec les
+apprenantes de wit/social-builder.

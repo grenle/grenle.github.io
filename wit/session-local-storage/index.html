@@ -1,0 +1,529 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2023-03-23 jeu. 17:28 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Session/Local Storage</title>
+<meta name="author" content="gregory" />
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+</head>
+<body>
+<div id="content" class="content">
+<h1 class="title">Session/Local Storage</h1>
+<div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#orgfee7889">1. Conversation avec localStorage</a></li>
+<li><a href="#org2ce62ba">2. Exercices!</a>
+<ul>
+<li><a href="#org3a68fb2">2.1. Bonus</a></li>
+</ul>
+</li>
+<li><a href="#org7df1c96">3. Ressources</a></li>
+</ul>
+</div>
+</div>
+<p>
+Pour stocker des informations au format clef/valeur, nous
+disposons de l'API Web Storage. Ces informations, au format
+texte, sont disponibles globalement, elles ne sont pas
+concernés par les champs lexicaux et le
+ramasse-miettes. Bien pratique, par exemple, pour les
+préférences utilisateurs, mais attention à ne pas exposer de
+secret (clef API, jwt) ou d'informations pouvant participer
+à la désanonymisation des données. Il suffit d'un bug dans
+l'implémentation de l'API du navigateur ou d'un librairie
+malicieuse!
+</p>
+
+<p>
+Cette API expose deux méchanismes: localStorage et
+sessionStorage. La différence entre les deux est que
+sessionStorage est vidé lorsque l'onglet ou le navigateur
+sont fermés tandis que localStorage persiste.
+</p>
+
+<p>
+Les données sont sockées séparément pour chaque origine, une
+origine étant définie par un protocol (ex: http), un nom
+d'hôte (ex: www.example.com) et un port (ex: 80, le défaut
+pour HTTP). Cela signifie que <a href="http://www.example.com/">http://www.example.com/</a> et
+<a href="https://www.example.com/">https://www.example.com/</a> ne partagent pas le stockage.
+</p>
+
+<p>
+Ces règles sont les même que pour le méchanisme de sécurité
+<a href="https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy">same-origin</a> policy bien expliqué sur MDN.
+</p>
+
+<p>
+Il n'est pas possible de se reposer entièrement sur cette API.
+</p>
+
+<ul class="org-ul">
+<li>La zone de stockage peut être pleine, un appel à
+<code>.setItem</code> génère une exception avec l'attribut <code>{name:
+  'QuotaExceededError'}</code></li>
+<li>La zone de stockage peut avoir une limite de taille de
+zero, tout appel à <code>setItem</code> générant la même exception
+que #1.</li>
+<li>Dans certains contextes (ex un onglet vide fraichement
+ouvert) l'appel à <code>localStorage</code> peut produire un
+exception avec l'attribut <code>{name:
+  'NS_ERROR_NOT_AVAILABLE'}</code></li>
+<li>Il est possible qu'aucune exception ne soit générée mais
+que <code>sessionStorage</code> ne conserve pas les données, par
+exemple dans le contexte de navigation 'privée' de
+certains navigateurs</li>
+<li>Le <code>localStorage</code> se comporte un peu comme un objet global
+persistant, et nous savons déjà utiliser un objet. La
+syntaxe spécifique à l'API Web Storage est différente mais
+il est possible d'utiliser la syntaxe des objets, sauf
+pour l'effacement d'une paire et la purge (qui n'existe
+pas vraiment pour les objets sauf s'ils sont assignés à
+window).</li>
+</ul>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">Object</td>
+<td class="org-left">localStorage</td>
+</tr>
+
+<tr>
+<td class="org-left">constructeur</td>
+<td class="org-left">[new] Object()</td>
+<td class="org-left">N/A</td>
+</tr>
+
+<tr>
+<td class="org-left">literal</td>
+<td class="org-left">{ youpi: 'youpla' }</td>
+<td class="org-left">N/A</td>
+</tr>
+
+<tr>
+<td class="org-left">assignation</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">localStorage.setItem('youpi', 'youpla')</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">monObject.youpi = 'youpla'</td>
+<td class="org-left">localStorage.youpi = 'youpla'</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">monObject['youpi']' = 'youpla'</td>
+<td class="org-left">localStorage['youpi']' = 'youpla'</td>
+</tr>
+
+<tr>
+<td class="org-left">requête</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">localStorage.getItem('youpi')</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">monObject.youpi</td>
+<td class="org-left">localStorage.youpi</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">monObject['youpi']</td>
+<td class="org-left">localStorage['youpi']'</td>
+</tr>
+
+<tr>
+<td class="org-left">effacement</td>
+<td class="org-left">delete o.youpi</td>
+<td class="org-left">localStorage.removeItem('youpi')</td>
+</tr>
+
+<tr>
+<td class="org-left">purge</td>
+<td class="org-left">N/A</td>
+<td class="org-left">localStorage.clear()</td>
+</tr>
+</tbody>
+</table>
+
+<div id="outline-container-orgfee7889" class="outline-2">
+<h2 id="orgfee7889"><span class="section-number-2">1.</span> Conversation avec localStorage</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+Il n'est pas nécessaire d'utiliser le prefix <code>window</code> sauf
+s'il existe un risque de collision avec un autre objet
+synonyme.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-javascript">&gt;&gt; localStorage
+Storage { length: 0 }
+
+<span style="color: #b22222;">// </span><span style="color: #b22222;">on peut stocker une information de plusieurs mani&#232;res.</span>
+
+&gt;&gt; localStorage.dormeuse = <span style="color: #8b2252;">'toute mignonne'</span>
+<span style="color: #8b2252;">"toute mignonne"</span>
+
+&gt;&gt; localStorage.tetsuo = <span style="color: #8b2252;">'est tr&#232;s beau'</span>
+<span style="color: #8b2252;">"est tr&#232;s beau"</span>
+
+&gt;&gt; localStorage.setItem(<span style="color: #8b2252;">'foo'</span>, <span style="color: #8b2252;">'bar'</span>)
+<span style="color: #008b8b;">undefined</span>
+
+&gt;&gt; localStorage
+Storage { tetsuo: <span style="color: #8b2252;">"est tr&#232;s beau"</span>, foo: <span style="color: #8b2252;">"bar"</span>, dormeuse: <span style="color: #8b2252;">"toute mignonne"</span>, length: 3 }
+
+<span style="color: #b22222;">// </span><span style="color: #b22222;">On peut aussi r&#233;cup&#233;rer une information de plusieurs mani&#232;res</span>
+
+&gt;&gt; localStorage.dormeuse
+<span style="color: #8b2252;">"toute mignonne"</span>
+
+&gt;&gt; localStorage[<span style="color: #8b2252;">'dormeuse'</span>]
+<span style="color: #8b2252;">"toute mignonne"</span>
+
+&gt;&gt; localStorage.getItem(<span style="color: #8b2252;">'dormeuse'</span>)
+<span style="color: #8b2252;">"toute mignonne"</span>
+
+<span style="color: #b22222;">// </span><span style="color: #b22222;">comment faire pour stocker autre chose que des chaines de caract&#232;res?</span>
+<span style="color: #b22222;">// </span><span style="color: #b22222;">JSON to the rescue!</span>
+
+&gt;&gt; localStorage[<span style="color: #8b2252;">'langages'</span>] = JSON.stringify({
+    beau: <span style="color: #8b2252;">'Scheme'</span>,
+    sympa: <span style="color: #8b2252;">'Python'</span>,
+    cool: <span style="color: #8b2252;">'Forth'</span>,
+    pabo: <span style="color: #8b2252;">'Java'</span>})
+
+<span style="color: #b22222;">// </span><span style="color: #b22222;">La REPL nous r&#233;pond avec la valeur qui est une chaine de caract&#232;res:</span>
+<span style="color: #8b2252;">"{\"beau\":\"Scheme\",\"sympa\":\"Python\",\"cool\":\"Forth\",\"pabo\":\"Java\"}"</span>
+
+<span style="color: #b22222;">// </span><span style="color: #b22222;">Et maintenant on r&#233;cup&#232;re la bestiole:</span>
+
+&gt;&gt; JSON.parse(localStorage.langages)
+Object { beau: <span style="color: #8b2252;">"Scheme"</span>, sympa: <span style="color: #8b2252;">"Python"</span>, cool: <span style="color: #8b2252;">"Forth"</span>, pabo: <span style="color: #8b2252;">"Java"</span> }
+
+&#8203;<span style="color: #b22222;">// </span><span style="color: #b22222;">On voit qu'on r&#233;cup&#232;re bien un objet, succ&#232;s! Mais que s'est-il pass&#233;?</span>
+<span style="color: #b22222;">// </span><span style="color: #b22222;">JSON.stringify permet de transformer un objet JavaScript en</span>
+<span style="color: #b22222;">// </span><span style="color: #b22222;">chaine de caract&#232;re</span>
+<span style="color: #b22222;">// </span><span style="color: #b22222;">JSON.parse permet de transformer une chaine de caract&#232;re en objet</span>
+<span style="color: #b22222;">// </span><span style="color: #b22222;">javascript.</span>
+
+<span style="color: #b22222;">// </span><span style="color: #b22222;">Ce genre de transformation d'un objet en un format stockable et l'inverse</span>
+<span style="color: #b22222;">// </span><span style="color: #b22222;">s'appellent s&#233;rialisation et d&#233;s&#233;rialisation</span>
+
+<span style="color: #b22222;">// </span><span style="color: #b22222;">Ne le mettez pas &#224; toutes les sauces, &#231;a impressionne la premi&#232;re fois seulement.</span>
+</pre>
+</div>
+
+<p>
+On notera que l'assignation façon objet retourne la valeur
+envoyée alors que l'appel à setItem retourne
+undefined. Allez savoir.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org2ce62ba" class="outline-2">
+<h2 id="org2ce62ba"><span class="section-number-2">2.</span> Exercices!</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+Créez vous un petit repo, par exemple localStorageAdventures
+et mettez-y les fichiers contenu dans cette archive.
+</p>
+
+<p>
+Ajoutez votre code au fichier js selon vos besoins. Pour
+mémoire window.onload = &lt;unefonction&gt; execute unefonction
+une fois le DOM prêt. Sans ça, une manipulation des éléments
+peut échouer car ils n'existent pas encore. A vous de voir
+s'il vous faut l'utiliser ou pas.
+</p>
+
+<ol class="org-ol">
+<li>On commence simple, stockez le nom de votre créature
+imaginaire préférée associée à la clef creature. En
+objet, on aurait écrit {creature: 'Tsukumogami'}</li>
+<li>Affichez cette créature dans la console.</li>
+<li>Stockez sous cette même clef un objet décrivant la
+créature avec les propriétés {name, form, habitat} et
+toute autre information que vous jugez pertinente.</li>
+<li>Dans le html créez des élements (à vous de choisir
+lesquels) avec les id correspondants aux informations de
+votre créature. Affichez avec les informations que vous
+avez stockées précédemment.</li>
+</ol>
+</div>
+
+<div id="outline-container-org3a68fb2" class="outline-3">
+<h3 id="org3a68fb2"><span class="section-number-3">2.1.</span> Bonus</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+Il est possible de réagir aux modifications des données du
+<code>localStorage</code> (ça n'est pas vrai du <code>sessionStorage</code>). Pour
+se faire, comme pour les autres évènements, on utilise
+<code>window.addEventListener('storage', &lt;mafonction&gt;)</code>
+</p>
+
+<p>
+Quand le stockage est modifié, la fonction recevera un
+argument qui est un objet avec, entres autres, les
+propriétés key (la clef associée à la modifiation) et
+oldValue / newValue qui représent l'ancienne et la nouvelle
+valeur respectivement.
+</p>
+
+<ol class="org-ol">
+<li>Stockez plusieurs créatures dans un array dans le
+localStorage sous la clef creatures.</li>
+<li>Récupérez les créatures et ffichez leurs noms sous la
+formes d'éléments clickables (boutons, liens, etc).</li>
+<li>Stockez également une des créatures sous la clef
+favouredBeast</li>
+<li>Affichez les informations de la créature préférée
+(favouredBeast) comme précédemment</li>
+<li>Faites en sorte que lorsque l'utilisateur clique le nom
+d'une créature, elle est stockée sous favouredBeast</li>
+<li>Ajoutez une fonction qui, lorsque le stockage change,
+change l'affichage pour refléter le choix de créature
+préférée.</li>
+<li>Ajoutez un bouton qui stocke une valeur aléatoire sous
+une autre clef comme thaisoup. Vérifiez que lorsque l'on
+clique sur le bouton random, la fonction que vous
+utilisez pour changer l'affichage est appelée mais ne
+fait rien car ça n'est pas la bonne clef qui est
+modifiée.</li>
+</ol>
+
+<p>
+Et voilà! Vous avez survécu! Tâchez de vous récompenser avec
+un bon cookie. Et si vous avez une idée intéressante
+d'utilisation du localStorage, n'hésitez pas à la coder!
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org7df1c96" class="outline-2">
+<h2 id="org7df1c96"><span class="section-number-2">3.</span> Ressources</h2>
+<div class="outline-text-2" id="text-3">
+<ul class="org-ul">
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API">Présentation Générale</a> de l'API Web Storage sur MDN</li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API%22">Guide d'utilisation</a> sur MDN</li>
+<li>Le <a href="https://developer.mozilla.org/en-US/docs/Web/API/StorageEvent">StorageEvent</a>, toujours sur MDN</li>
+<li>La <a href="https://html.spec.whatwg.org/multipage/webstorage.html#webstorage">spécification</a> de l'API par le WHATWG, contenant des
+sections déstinées aux developpeurs web.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: gregory</p>
+<p class="date">Created: 2023-03-23 jeu. 17:28</p>
+<p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
